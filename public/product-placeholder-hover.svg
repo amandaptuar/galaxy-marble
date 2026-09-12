@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <defs>
+    <linearGradient id="bgGradHover" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f5f1e8" />
+      <stop offset="50%" stop-color="#ebe4d5" />
+      <stop offset="100%" stop-color="#dfd6c4" />
+    </linearGradient>
+    <linearGradient id="goldGradHover" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d4af37" />
+      <stop offset="50%" stop-color="#b8860b" />
+      <stop offset="100%" stop-color="#7a5210" />
+    </linearGradient>
+    <pattern id="marbleVeinHover" width="300" height="400" patternUnits="userSpaceOnUse">
+      <path d="M-50,200 Q150,100 250,280 T450,350" fill="none" stroke="#d5ccbd" stroke-width="2" opacity="0.6" />
+      <path d="M80,-30 Q200,220 150,360 T350,480" fill="none" stroke="#cfc5b3" stroke-width="1.5" opacity="0.5" />
+      <path d="M120,80 Q50,250 200,380" fill="none" stroke="#d8cfbe" stroke-width="2" opacity="0.5" />
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="800" fill="url(#bgGradHover)" />
+  <rect width="600" height="800" fill="url(#marbleVeinHover)" />
+
+  <!-- Outer Luxury Border -->
+  <rect x="24" y="24" width="552" height="752" fill="none" stroke="url(#goldGradHover)" stroke-width="2" opacity="0.6" rx="8" />
+  <rect x="34" y="34" width="532" height="732" fill="none" stroke="#b8860b" stroke-width="1" stroke-dasharray="6,4" opacity="0.4" rx="6" />
+
+  <!-- Center Decorative Diamond Badge -->
+  <g transform="translate(300, 330)">
+    <!-- Outer Glow Circle -->
+    <circle r="72" fill="#ffffff" opacity="0.85" />
+    <circle r="72" fill="none" stroke="url(#goldGradHover)" stroke-width="2" />
+    <circle r="64" fill="none" stroke="#b8860b" stroke-width="1" stroke-dasharray="4,3" opacity="0.6" />
+
+    <!-- Stone / Sculpture Icon Inverted -->
+    <path d="M0,-36 L32,-10 L20,32 L-20,32 L-32,-10 Z" fill="rgba(184,134,11,0.08)" stroke="url(#goldGradHover)" stroke-width="2.5" stroke-linejoin="round" />
+    <path d="M-32,-10 L32,-10 M0,-36 L0,32 M-20,32 L0,-10 L20,32" fill="none" stroke="url(#goldGradHover)" stroke-width="1.2" opacity="0.8" />
+    <circle cx="0" cy="-6" r="4" fill="#b8860b" />
+  </g>
+
+  <!-- Typography -->
+  <text x="300" y="445" font-family="'Cinzel', Georgia, serif" font-size="20" font-weight="700" fill="#1e1f21" text-anchor="middle" letter-spacing="4">
+    GALAXY MARBLE
+  </text>
+  
+  <text x="300" y="475" font-family="'Montserrat', sans-serif" font-size="11" font-weight="700" fill="#b8860b" text-anchor="middle" letter-spacing="3">
+    HOVER ANGLE • DETAIL VIEW
+  </text>
+
+  <line x1="220" y1="495" x2="380" y2="495" stroke="#b8860b" stroke-width="1" opacity="0.6" />
+
+  <text x="300" y="525" font-family="'Montserrat', sans-serif" font-size="10" font-weight="600" fill="#5f6269" text-anchor="middle" letter-spacing="1.5">
+    3:4 ASPECT RATIO • 600 × 800 PX
+  </text>
+
+  <text x="300" y="548" font-family="'Cormorant Garamond', Georgia, serif" font-size="13" font-style="italic" fill="#70747d" text-anchor="middle">
+    Fine Carving & 24K Gold Embellishment
+  </text>
+
+  <!-- Corner Flourishes -->
+  <path d="M44,60 L60,44 M44,44 L60,44 L44,60" fill="none" stroke="#b8860b" stroke-width="1.5" opacity="0.6" />
+  <path d="M556,60 L540,44 M556,44 L540,44 L556,60" fill="none" stroke="#b8860b" stroke-width="1.5" opacity="0.6" />
+  <path d="M44,740 L60,756 M44,756 L60,756 L44,740" fill="none" stroke="#b8860b" stroke-width="1.5" opacity="0.6" />
+  <path d="M556,740 L540,756 M556,756 L540,756 L556,740" fill="none" stroke="#b8860b" stroke-width="1.5" opacity="0.6" />
+</svg>
