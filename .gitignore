@@ -41,3 +41,4 @@ extracted_data.json
 products_extracted.json
 galaxy_marble_complete_data.json
 site_complete_data.json
+"node_modules" 
