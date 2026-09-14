@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Menu, Search, ShieldCheck } from 'lucide-react';
+import { Menu, ShieldCheck } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 
 const NAV_ITEMS = [
@@ -24,7 +24,6 @@ const NAV_ITEMS = [
 
 export const Header = () => {
   const { 
-    setIsSearchOpen,
     setIsMobileMenuOpen
   } = useStore();
 
@@ -63,15 +62,6 @@ export const Header = () => {
                 />
                 <span className="brand-name-compact">GALAXY MARBLE</span>
               </Link>
-
-              <button 
-                className="icon-btn mobile-only" 
-                onClick={() => setIsSearchOpen(true)}
-                title="Search Products"
-                aria-label="Search site"
-              >
-                <Search size={19} />
-              </button>
             </div>
 
             {/* Center: Mobile logo OR Desktop Nav Links */}
@@ -112,22 +102,13 @@ export const Header = () => {
               </nav>
             </div>
 
-            {/* Right: Search & Direct WhatsApp Enquire */}
+            {/* Right: Direct WhatsApp Enquire */}
             <div className="header-right">
-              <button 
-                className="icon-btn" 
-                onClick={() => setIsSearchOpen(true)}
-                title="Search Products"
-                aria-label="Search site"
-              >
-                <Search size={19} />
-              </button>
-
               <a 
                 href="https://wa.me/919929288880?text=Hello%20Galaxy%20Marble%2C%20I%20would%20like%20to%20enquire%20about%20your%20bespoke%20marble%20crafts." 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="header-whatsapp-cta desktop-only"
+                className="header-whatsapp-cta"
                 title="Consult with Master Craftsman"
               >
                 <span>Enquire Now</span>

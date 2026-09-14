@@ -155,27 +155,39 @@ export function ProductsPage() {
 
       {/* Main Catalog Body */}
       <div className="container catalog-body-container">
-        {/* Mobile Filter & Sort Bar */}
+        {/* Mobile Category Dropdown Selector */}
         <div className="catalog-mobile-controls">
-          <button 
-            className="btn-mobile-filter-trigger"
-            onClick={() => setIsMobileFilterOpen(true)}
-          >
-            <SlidersHorizontal size={16} />
-            <span>Filters {activeFilterCount > 0 && `(${activeFilterCount})`}</span>
-          </button>
-
-          <div className="catalog-sort-compact">
-            <select 
-              value={sortBy} 
-              onChange={(e) => setSortBy(e.target.value)}
-              aria-label="Sort by"
-            >
-              <option value="featured">Sort: Featured</option>
-              <option value="rating">Sort: Top Rated</option>
-              <option value="name-asc">Sort: Name (A-Z)</option>
-              <option value="name-desc">Sort: Name (Z-A)</option>
-            </select>
+          <div className="catalog-mobile-category-dropdown">
+            <label htmlFor="mobile-category-select" className="mobile-cat-label">
+              <Filter size={15} />
+              <span>Filter by Category:</span>
+            </label>
+            <div className="mobile-select-wrapper">
+              <select
+                id="mobile-category-select"
+                value={selectedCategories.length === 1 ? selectedCategories[0] : (selectedCategories.length === 0 ? '' : selectedCategories[0])}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (!val || val === 'ALL') {
+                    setSelectedCategories([]);
+                    setSearchParams({});
+                  } else {
+                    setSelectedCategories([val]);
+                    setSearchParams({ category: val });
+                  }
+                }}
+                className="mobile-category-select"
+                aria-label="Filter by Category"
+              >
+                <option value="">ALL CATEGORIES ({products.length})</option>
+                {categoryList.map((cat) => (
+                  <option key={cat.name} value={cat.name}>
+                    {cat.name} ({cat.count})
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={16} className="select-chevron" />
+            </div>
           </div>
         </div>
 
@@ -362,86 +374,6 @@ export function ProductsPage() {
           </main>
         </div>
       </div>
-
-      {/* ============================================================ */}
-      {/* MOBILE FILTER DRAWER                                         */}
-      {/* ============================================================ */}
-      {isMobileFilterOpen && (
-        <div className="drawer-overlay" onClick={() => setIsMobileFilterOpen(false)}>
-          <div 
-            className="drawer-panel drawer-left mobile-filter-drawer"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="drawer-header">
-              <h3>Filter By Category</h3>
-              <button 
-                className="drawer-close-btn"
-                onClick={() => setIsMobileFilterOpen(false)}
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            <div className="drawer-body">
-              {/* Category Filter Only */}
-              <div className="amazon-filter-group">
-                <h4 className="amazon-filter-group-title">CATEGORIES</h4>
-                <ul className="amazon-checkbox-list">
-                  {/* All Categories Option */}
-                  <li className="amazon-checkbox-item">
-                    <label 
-                      className={`amazon-checkbox-label ${selectedCategories.length === 0 ? 'active' : ''}`}
-                      onClick={() => {
-                        setSelectedCategories([]);
-                        setSearchParams({});
-                      }}
-                    >
-                      <span className={`amazon-custom-checkbox ${selectedCategories.length === 0 ? 'checked' : ''}`}>
-                        {selectedCategories.length === 0 && <Check size={12} strokeWidth={3} />}
-                      </span>
-                      <span className="amazon-filter-text">ALL CATEGORIES</span>
-                      <span className="amazon-filter-count">({products.length})</span>
-                    </label>
-                  </li>
-
-                  {categoryList.map((cat) => {
-                    const isChecked = selectedCategories.includes(cat.name);
-                    return (
-                      <li key={cat.name} className="amazon-checkbox-item">
-                        <label 
-                          className={`amazon-checkbox-label ${isChecked ? 'active' : ''}`}
-                          onClick={() => handleCategoryToggle(cat.name)}
-                        >
-                          <span className={`amazon-custom-checkbox ${isChecked ? 'checked' : ''}`}>
-                            {isChecked && <Check size={12} strokeWidth={3} />}
-                          </span>
-                          <span className="amazon-filter-text">{cat.name}</span>
-                          <span className="amazon-filter-count">({cat.count})</span>
-                        </label>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            </div>
-
-            <div className="drawer-footer mobile-filter-footer">
-              <button 
-                className="btn-outline-clear"
-                onClick={resetAllFilters}
-              >
-                Reset
-              </button>
-              <button 
-                className="btn-primary-apply"
-                onClick={() => setIsMobileFilterOpen(false)}
-              >
-                View {filteredProducts.length} Results
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
