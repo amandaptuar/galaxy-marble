@@ -42,7 +42,7 @@ export function TermsPage() {
                 <strong>Organic Veining:</strong> Natural marble is formed over millennia. Subtle calcite clouds, fine grey or golden streaks, and crystalline quartz pockets are authentic signatures of the stone and are not considered defects.
               </li>
               <li>
-                <strong>Handcrafted Uniqueness:</strong> As every idol is individually chiseled by hand, minor variations in facial contours, crown filigree, and pedestal carvings reflect the artisan’s individual chisel mastery.
+                <strong>Handcrafted Uniqueness:</strong> As every stone masterpiece is individually chiseled and polished by hand, natural crystalline variations in veining, edge contours, and texture reflect the authentic natural beauty of stone.
               </li>
             </ul>
           </section>

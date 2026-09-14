@@ -179,10 +179,10 @@ export function ContactPage() {
                       value={formData.projectType}
                       onChange={handleChange}
                     >
-                      <option value="Bespoke Pooja Room Mandir">Bespoke Pooja Room Mandir</option>
-                      <option value="Deity Idol Murti (Makrana Marble)">Deity Idol Murti</option>
-                      <option value="Luxury Center Table / Furniture">Luxury Center Table</option>
-                      <option value="Architectural Pillars & Fireplace">Pillars & Fireplace</option>
+                      <option value="MARBLE SLABS & TILES">MARBLE SLABS & TILES</option>
+                      <option value="TEMPLES & MANDIRS">TEMPLES & MANDIRS</option>
+                      <option value="LUXURY FURNITURE">LUXURY FURNITURE</option>
+                      <option value="FIREPLACES & INLAYS">FIREPLACES & INLAYS</option>
                       <option value="Home Decor Accents (Urli, Lamps)">Decor Accents</option>
                     </select>
                   </div>

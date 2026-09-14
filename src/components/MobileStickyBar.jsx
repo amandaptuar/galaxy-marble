@@ -1,17 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, LayoutGrid, Search, Heart, ShoppingBag } from 'lucide-react';
+import { Home, LayoutGrid, Search, MessageCircle } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 
 export const MobileStickyBar = () => {
   const navigate = useNavigate();
-  const { 
-    totalCartCount, 
-    setIsCartOpen, 
-    wishlist, 
-    setIsWishlistOpen,
-    setIsSearchOpen 
-  } = useStore();
+  const { setIsSearchOpen } = useStore();
 
   const handleHome = () => {
     navigate('/');
@@ -20,6 +14,13 @@ export const MobileStickyBar = () => {
 
   const handleProducts = () => {
     navigate('/products');
+  };
+
+  const handleWhatsApp = () => {
+    window.open(
+      'https://wa.me/919929288880?text=Hello%20Galaxy%20Marble%2C%20I%20would%20like%20to%20enquire%20about%20your%20bespoke%20marble%20crafts.',
+      '_blank'
+    );
   };
 
   return (
@@ -52,27 +53,14 @@ export const MobileStickyBar = () => {
       </button>
 
       <button 
-        className="sticky-tab-btn" 
-        onClick={() => setIsWishlistOpen(true)}
-        aria-label="Wishlist"
+        className="sticky-tab-btn sticky-whatsapp-btn" 
+        onClick={handleWhatsApp}
+        aria-label="WhatsApp Enquiry"
       >
-        <Heart size={20} />
-        <span>Wishlist</span>
-        {wishlist.length > 0 && (
-          <span className="sticky-badge">{wishlist.length}</span>
-        )}
-      </button>
-
-      <button 
-        className="sticky-tab-btn" 
-        onClick={() => setIsCartOpen(true)}
-        aria-label="Shopping Cart"
-      >
-        <ShoppingBag size={20} />
-        <span>Cart</span>
-        {totalCartCount > 0 && (
-          <span className="sticky-badge">{totalCartCount}</span>
-        )}
+        <div className="sticky-wa-icon-wrap">
+          <MessageCircle size={20} />
+        </div>
+        <span>Enquire</span>
       </button>
     </nav>
   );

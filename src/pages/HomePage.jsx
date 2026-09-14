@@ -9,12 +9,14 @@ import { CollectionsGrid } from '../components/CollectionsGrid';
 import { CommunityReviews } from '../components/CommunityReviews';
 import { GuidesSection } from '../components/GuidesSection';
 import { FaqSection } from '../components/FaqSection';
-import { VideoShowcase } from '../components/VideoShowcase';
 import { FeaturedBrands } from '../components/FeaturedBrands';
 import { ConsultationBanner } from '../components/ConsultationBanner';
-import { DUMMY_PRODUCTS } from '../data/siteData';
+import { OurProductGallery } from '../components/OurProductGallery';
+import { useStore } from '../context/StoreContext';
 
 export function HomePage() {
+  const { products } = useStore();
+
   return (
     <>
       {/* Hero Slideshow */}
@@ -26,22 +28,24 @@ export function HomePage() {
       {/* Shop By Category */}
       <ShopByCategory />
 
-      {/* Products Showcase: Only Dummy Product Card */}
-      <div id="dream-murtis">
-        <ProductShowcase
-          id="products"
-          tag="Handcrafted Masterpieces"
-          title="Our Products"
-          subtitle="Explore meticulously detailed deities and luxury stone art carved from pure Makrana white marble."
-          products={DUMMY_PRODUCTS}
-        />
-      </div>
+      {/* Products Showcase (Shown when live products exist) */}
+      {products && products.length > 0 && (
+        <div id="featured-products">
+          <ProductShowcase
+            id="products"
+            tag="Handcrafted Stonework"
+            title="Featured Architectural Collection"
+            subtitle="Explore pure Makrana white marble slabs, carved pooja mandirs, and luxury stone furniture."
+            products={products}
+          />
+        </div>
+      )}
 
       {/* Promotional Strip Banner 1 */}
       <PromoStrip
         tag="Pure Makrana Heritage"
-        title="Bespoke Marble Pooja Rooms & Sacred Architecture"
-        desc="From conceptual 3D elevation drawings to final on-site installation, we create sacred havens following ancient Vedic Vastu Shastra principles."
+        title="Bespoke Marble Pooja Rooms & Architectural Sanctums"
+        desc="From conceptual 3D elevation drawings to final on-site installation, we engineer sacred sanctuaries following ancient Vedic principles."
         btnText="Schedule Private Consultation"
         btnLink="/contact"
         bgImage="/marble-pooja-room-banner.jpg"
@@ -54,11 +58,14 @@ export function HomePage() {
       <PromoStrip
         tag="Worldwide Safe Delivery"
         title="Global White Glove Delivery in Shockproof Wooden Crates"
-        desc="Every murti and architectural component is packed in custom fumigated multi-layered wooden crates with comprehensive transit insurance."
+        desc="Every architectural component and marble masterpiece is packed in custom fumigated multi-layered wooden crates with comprehensive transit insurance."
         btnText="Explore All Products"
         btnLink="/products"
-        bgImage="https://www.shoptilakstonearts.com/cdn/shop/files/SMT01948-Edit-min.jpg"
+        bgImage="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80"
       />
+
+      {/* Our Product Gallery Slider (Authentic Creations) */}
+      <OurProductGallery />
 
       {/* Collections Showcase */}
       <CollectionsGrid />
@@ -71,9 +78,6 @@ export function HomePage() {
 
       {/* Frequently Asked Questions */}
       <FaqSection />
-
-      {/* Artisanal Studio Video */}
-      <VideoShowcase />
 
       {/* Featured In / Press Logos */}
       <FeaturedBrands />

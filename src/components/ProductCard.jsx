@@ -1,24 +1,27 @@
 import React from 'react';
-import { Heart, ShoppingBag, Eye, Star, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Eye, Sparkles, MessageCircle } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 
 export const ProductCard = ({ product }) => {
-  const { addToCart, toggleWishlist, isInWishlist, setQuickViewProduct } = useStore();
-  const inWishlist = isInWishlist(product.title);
+  const { setQuickViewProduct, enquireOnWhatsApp } = useStore();
 
-  // Compute savings if originalPrice is available
-  const parseNum = (p) => (p ? parseInt(p.replace(/[^0-9]/g, ''), 10) : 0);
-  const currentNum = product.numericPrice || parseNum(product.price);
-  const origNum = parseNum(product.originalPrice);
-  const savings = origNum > currentNum ? origNum - currentNum : 0;
+  const categoryName = (product.category || 'MARBLE BASIN').toUpperCase();
+  const stoneName = product.stone_type || product.stoneType || 'Makrana Stone';
+
+  const handleProductClick = () => {
+    setQuickViewProduct(product);
+  };
 
   return (
-    <div className="product-card">
+    <div 
+      className="product-card"
+      onClick={handleProductClick}
+      style={{ cursor: 'pointer' }}
+    >
       {/* Media & Badges */}
       <div 
         className="product-media"
-        onClick={() => setQuickViewProduct(product)}
-        title={`View details of ${product.title}`}
+        title={`View ${product.title}`}
       >
         {/* Main Image */}
         <img 
@@ -29,9 +32,9 @@ export const ProductCard = ({ product }) => {
         />
 
         {/* Hover Image */}
-        {product.hoverImage && product.hoverImage !== product.image && (
+        {product.hover_image && product.hover_image !== product.image && (
           <img 
-            src={product.hoverImage} 
+            src={product.hover_image} 
             alt={product.title} 
             className="product-img-hover" 
             loading="lazy"
@@ -40,29 +43,16 @@ export const ProductCard = ({ product }) => {
 
         {/* Top Badges Wrap */}
         <div className="card-top-badges">
-          {product.discount && (
-            <span className="product-badge-discount">
-              {product.discount} OFF
-            </span>
-          )}
           <span className="product-badge-stone">
             <Sparkles size={10} style={{ display: 'inline', marginRight: 3 }} />
-            {product.stoneType ? product.stoneType.split(' ')[0] : 'Makrana'}
+            {stoneName.split(' ')[0]}
           </span>
+          {product.in_stock === false ? (
+            <span className="product-badge-stock out">Custom Order</span>
+          ) : (
+            <span className="product-badge-stock in">Available</span>
+          )}
         </div>
-
-        {/* Wishlist Button */}
-        <button 
-          className={`card-wishlist-btn ${inWishlist ? 'active' : ''}`}
-          onClick={(e) => {
-            e.stopPropagation();
-            toggleWishlist(product);
-          }}
-          title={inWishlist ? "Remove from Wishlist" : "Save to Wishlist"}
-          aria-label="Wishlist"
-        >
-          <Heart size={16} fill={inWishlist ? "#d12f2f" : "none"} />
-        </button>
 
         {/* Desktop Quick View Overlay Button */}
         <div className="quick-view-btn-wrap">
@@ -74,17 +64,17 @@ export const ProductCard = ({ product }) => {
             }}
           >
             <Eye size={14} />
-            <span>Quick View & Specs</span>
+            <span>Specifications</span>
           </button>
         </div>
       </div>
 
       {/* Product Content Details */}
       <div className="product-info">
-        {/* Stone / Category Header */}
+        {/* Category Header strictly in ALL CAPS */}
         <div className="product-meta-row">
           <span className="product-category-tag">
-            {product.category || 'Marble Sculpture'}
+            {categoryName}
           </span>
           {product.sku && <span className="product-sku">{product.sku}</span>}
         </div>
@@ -93,58 +83,54 @@ export const ProductCard = ({ product }) => {
         <h3 
           className="product-title" 
           title={product.title}
-          onClick={() => setQuickViewProduct(product)}
         >
           {product.title}
         </h3>
 
-        {/* Rating & Verified Proof */}
-        <div className="product-rating-row">
-          <div className="product-stars">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} size={11} fill="#e5a93b" color="#e5a93b" />
-            ))}
-          </div>
-          <span className="rating-score">5.0</span>
-          <span className="rating-verified">
-            <CheckCircle2 size={11} className="text-gold" />
-            Vedic Verified
-          </span>
-        </div>
-
-        {/* Price & Savings Box */}
-        <div className="product-price-box">
-          <div className="price-stack">
-            <span className="price-current">{product.price}</span>
-            {product.originalPrice && (
-              <span className="price-original">{product.originalPrice}</span>
-            )}
-          </div>
-          {savings > 0 && (
-            <span className="savings-pill">
-              Save ₹ {savings.toLocaleString('en-IN')}
-            </span>
+        {/* Stone details & dimensions */}
+        <div className="product-spec-mini">
+          <span>{stoneName}</span>
+          {product.dimensions && (
+            <span className="spec-dim">• {product.dimensions}</span>
           )}
         </div>
 
-        {/* Action Buttons: Add to Cart + Mobile Quick View */}
-        <div className="product-card-actions">
-          <button 
-            className="btn-add-cart"
-            onClick={() => addToCart(product)}
-            aria-label={`Add ${product.title} to cart`}
-          >
-            <ShoppingBag size={14} />
-            <span>Add to Cart</span>
-          </button>
+        {/* Price Box - Strictly NO PRICES, Price on Request / Enquiry */}
+        <div className="product-price-box">
+          <div className="price-stack">
+            <span className="price-on-request">Price on Request</span>
+            <span className="price-sub-note">Custom sizing & crating available</span>
+          </div>
+        </div>
 
+        {/* Action Buttons: View Details + WhatsApp Enquiry */}
+        <div className="product-card-actions">
+          {/* View Details Button (Expands product in large dialogue) */}
           <button 
-            className="mobile-quick-view-btn"
-            onClick={() => setQuickViewProduct(product)}
-            title="Quick View"
-            aria-label="Quick View"
+            className="btn-view-details"
+            onClick={(e) => {
+              e.stopPropagation();
+              setQuickViewProduct(product);
+            }}
+            title="View enlarged photo and complete specifications"
+            aria-label={`View details of ${product.title}`}
           >
             <Eye size={15} />
+            <span>View Details</span>
+          </button>
+
+          {/* Primary WhatsApp Enquiry Button */}
+          <button 
+            className="btn-whatsapp-enquire"
+            onClick={(e) => {
+              e.stopPropagation();
+              enquireOnWhatsApp(product);
+            }}
+            title="Enquire on WhatsApp with details"
+            aria-label={`Enquire for ${product.title} on WhatsApp`}
+          >
+            <MessageCircle size={15} />
+            <span>Enquire</span>
           </button>
         </div>
       </div>

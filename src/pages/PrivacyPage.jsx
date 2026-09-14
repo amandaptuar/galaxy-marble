@@ -36,7 +36,7 @@ export function PrivacyPage() {
                 <strong>Personal Identification:</strong> Name, delivery address, phone number, and email address for order fulfillment and insured transit documentation.
               </li>
               <li>
-                <strong>Architectural & Vastu Specifications:</strong> Room dimensions, Pooja room floor plans, and divine idol reference photos provided to our stone sculptors.
+                <strong>Architectural & Vastu Specifications:</strong> Room dimensions, Pooja room floor plans, and custom stone design sketches provided to our architects.
               </li>
               <li>
                 <strong>Transaction Data:</strong> Encrypted payment confirmation references from verified payment gateways (Razorpay, UPI, Wire Transfer). We do not store raw credit/debit card numbers or bank credentials.

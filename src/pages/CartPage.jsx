@@ -2,33 +2,56 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
   Trash2, Plus, Minus, ArrowRight, ShoppingBag, 
-  Sparkles, ShieldCheck, Truck, ChevronRight, Tag 
+  Sparkles, ShieldCheck, Truck, ChevronRight, MessageCircle, Phone, User, MapPin, FileText, CheckCircle2 
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 
 export function CartPage() {
-  const { cart, removeFromCart, updateQuantity, cartSubtotal, showToast } = useStore();
+  const { cart, removeFromCart, updateQuantity, clearCart, submitCartEnquiry, currentUser, setIsAuthModalOpen } = useStore();
   const navigate = useNavigate();
 
-  const [couponCode, setCouponCode] = useState('');
-  const [discountPercent, setDiscountPercent] = useState(0);
-  const [orderNote, setOrderNote] = useState('');
+  // Contact Form
+  const [customerName, setCustomerName] = useState(() => currentUser ? currentUser.full_name : '');
+  const [customerPhone, setCustomerPhone] = useState(() => currentUser ? currentUser.phone : '');
+  const [siteLocation, setSiteLocation] = useState('');
+  const [projectNotes, setProjectNotes] = useState('');
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const freeCratingThreshold = 100000;
-  const cratingCost = cartSubtotal >= freeCratingThreshold ? 0 : 4999;
-  const discountAmount = Math.round((cartSubtotal * discountPercent) / 100);
-  const grandTotal = Math.max(0, cartSubtotal - discountAmount + cratingCost);
+  // Sync if user logs in
+  React.useEffect(() => {
+    if (currentUser) {
+      if (!customerName) setCustomerName(currentUser.full_name);
+      if (!customerPhone) setCustomerPhone(currentUser.phone);
+    }
+  }, [currentUser]);
 
-  const applyCoupon = (e) => {
+  const handleSubmitEnquiry = async (e) => {
     e.preventDefault();
-    if (couponCode.trim().toUpperCase() === 'MAKRANA10') {
-      setDiscountPercent(10);
-      showToast('10% Artisanal Coupon Applied!');
-    } else if (couponCode.trim().toUpperCase() === 'GALAXY') {
-      setDiscountPercent(15);
-      showToast('15% VIP Patron Discount Applied!');
-    } else {
-      showToast('Invalid coupon code. Try "MAKRANA10"');
+    if (!customerPhone.trim() || customerPhone.trim().length < 10) {
+      alert('Please provide a valid 10-digit WhatsApp phone number so our artisans can connect with you.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const fullNotes = [
+        siteLocation ? `Site Location: ${siteLocation}` : '',
+        projectNotes ? `Specifications: ${projectNotes}` : ''
+      ].filter(Boolean).join(' | ');
+
+      await submitCartEnquiry({
+        name: customerName.trim() || 'Valued Patron',
+        phone: customerPhone.trim(),
+        notes: fullNotes
+      });
+
+      setIsSubmitted(true);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -40,110 +63,121 @@ export function CartPage() {
           <nav className="catalog-breadcrumbs" aria-label="Breadcrumb">
             <Link to="/">Home</Link>
             <ChevronRight size={14} className="crumb-sep" />
-            <span>Shopping Cart</span>
+            <span>Project Enquiry Bag</span>
           </nav>
 
           <div className="cart-hero-content">
             <span className="section-tag">
               <ShoppingBag size={12} style={{ display: 'inline', marginRight: 4 }} />
-              Sacred Patron Cart
+              Architectural Quotation Request
             </span>
-            <h1 className="cart-title">Your Selected Stone Sculptures</h1>
+            <h1 className="cart-title">Your Selected Stone Masterpieces</h1>
             <p className="cart-desc">
-              Review your customized deities and architectural accents before reserving master artisan production.
+              Review your selected marble slabs, bespoke pooja mandirs, and luxury furniture. Submit your enquiry to receive direct quarry pricing and WhatsApp consultation.
             </p>
           </div>
         </div>
       </div>
 
       <div className="container cart-main-body">
-        {cart.length === 0 ? (
+        {isSubmitted ? (
+          <div className="cart-empty-screen">
+            <div className="empty-cart-icon">
+              <CheckCircle2 size={64} className="text-gold" />
+            </div>
+            <h2>Quotation Enquiry Submitted!</h2>
+            <p>
+              Your enquiry has been logged in our system with timestamp and transmitted to our master architects via WhatsApp. Our team will contact you shortly on <strong>{customerPhone}</strong>.
+            </p>
+            <div style={{ display: 'flex', gap: 16, justifyContent: 'center', marginTop: 24 }}>
+              <button 
+                className="btn-primary"
+                onClick={() => {
+                  clearCart();
+                  navigate('/products');
+                }}
+              >
+                Browse More Products
+              </button>
+              <Link to="/" className="btn-secondary">
+                Return to Home
+              </Link>
+            </div>
+          </div>
+        ) : cart.length === 0 ? (
           <div className="cart-empty-screen">
             <div className="empty-cart-icon">
               <ShoppingBag size={56} className="text-gold" />
             </div>
-            <h2>Your Shopping Cart is Empty</h2>
-            <p>You have not selected any marble masterpieces yet. Browse our signature collections carved from pure Makrana marble.</p>
+            <h2>Your Enquiry Bag is Empty</h2>
+            <p>You have not selected any stone masterpieces yet. Explore our signature Makrana marble slabs, hand-carved mandirs, and luxury furniture.</p>
             <Link to="/products" className="btn-primary" style={{ marginTop: 24, display: 'inline-flex' }}>
-              Explore Artisanal Collection
+              Explore Architectural Catalog
             </Link>
           </div>
         ) : (
           <div className="cart-split-layout">
-            {/* Left: Cart Items List */}
+            {/* Left Column: Items List */}
             <div className="cart-items-column">
-              {/* Shipping Progress */}
               <div className="crating-progress-box">
                 <div className="crating-icon">
-                  <Truck size={20} className="text-gold" />
+                  <Truck size={22} className="text-gold" />
                 </div>
                 <div className="crating-text">
-                  {cartSubtotal >= freeCratingThreshold ? (
-                    <p className="crating-qualified">
-                      ✨ <strong>Congratulations!</strong> You qualify for <strong>FREE Door-to-Door Insured Wooden Crating</strong> worldwide!
-                    </p>
-                  ) : (
-                    <p>
-                      Add <strong>₹ {(freeCratingThreshold - cartSubtotal).toLocaleString('en-IN')}</strong> more to unlock <strong>FREE Export Insured Wooden Crating</strong>!
-                    </p>
-                  )}
-                  <div className="crating-bar-track">
-                    <div 
-                      className="crating-bar-fill"
-                      style={{ width: `${Math.min(100, (cartSubtotal / freeCratingThreshold) * 100)}%` }}
-                    />
-                  </div>
+                  <p className="crating-qualified">
+                    ✨ <strong>Export-Insured Crating & Freight:</strong> All products are packed in multi-layered insured wooden crates with worldwide door-to-door transit insurance.
+                  </p>
                 </div>
               </div>
 
-              {/* Items Table */}
+              {/* Items Card */}
               <div className="cart-table-card">
-                <div className="cart-table-header hidden md:grid">
-                  <span>Artwork</span>
-                  <span>Price</span>
+                <div className="cart-table-header">
+                  <span>Selected Product ({cart.length})</span>
                   <span>Quantity</span>
-                  <span style={{ textAlign: 'right' }}>Total</span>
+                  <span>Pricing</span>
                 </div>
 
                 <div className="cart-items-list">
                   {cart.map((item) => (
                     <div key={item.id || item.title} className="cart-item-row">
-                      <div className="item-artwork-info">
+                      <div className="item-cell-product">
                         <img 
                           src={item.image} 
                           alt={item.title} 
-                          className="item-thumb-img" 
+                          className="cart-thumb" 
                         />
-                        <div className="item-details">
+                        <div className="item-info">
+                          <span className="item-category-pill">
+                            {(item.category || '').toUpperCase()}
+                          </span>
                           <h3 className="item-title">{item.title}</h3>
-                          <span className="item-sku">SKU: {item.sku}</span>
-                          <span className="item-stone-badge">Pure Makrana White</span>
+                          <div className="item-meta-sub">
+                            <span>Stone: {item.stoneType || 'Natural Marble'}</span>
+                            {item.dimensions && <span>• {item.dimensions}</span>}
+                          </div>
                           <button 
-                            className="remove-link-btn"
-                            onClick={() => removeFromCart(item.title)}
-                            aria-label={`Remove ${item.title}`}
+                            className="btn-remove-row"
+                            onClick={() => removeFromCart(item.id || item.title)}
                           >
-                            <Trash2 size={13} /> Remove
+                            <Trash2 size={13} />
+                            <span>Remove</span>
                           </button>
                         </div>
                       </div>
 
-                      <div className="item-unit-price">
-                        <span className="mobile-label md:hidden">Price: </span>
-                        <strong>{item.price}</strong>
-                      </div>
-
-                      <div className="item-quantity-stepper">
-                        <div className="stepper-box">
+                      {/* Quantity Stepper */}
+                      <div className="item-cell-qty">
+                        <div className="cart-qty-stepper">
                           <button 
-                            onClick={() => updateQuantity(item.title, -1)}
+                            onClick={() => updateQuantity(item.id || item.title, -1)}
                             aria-label="Decrease quantity"
                           >
                             <Minus size={13} />
                           </button>
-                          <span>{item.quantity}</span>
+                          <span className="qty-val">{item.quantity}</span>
                           <button 
-                            onClick={() => updateQuantity(item.title, 1)}
+                            onClick={() => updateQuantity(item.id || item.title, 1)}
                             aria-label="Increase quantity"
                           >
                             <Plus size={13} />
@@ -151,106 +185,133 @@ export function CartPage() {
                         </div>
                       </div>
 
-                      <div className="item-line-total">
-                        <span className="mobile-label md:hidden">Subtotal: </span>
-                        <strong>
-                          ₹ {((item.numericPrice || 99999) * item.quantity).toLocaleString('en-IN')}
-                        </strong>
+                      {/* Pricing Cell */}
+                      <div className="item-cell-price">
+                        <span className="price-tag-enquiry">Price on Request</span>
+                        <span className="price-tag-sub">Direct Quarry Quote</span>
                       </div>
                     </div>
                   ))}
                 </div>
-              </div>
 
-              {/* Order Notes / Vastu Instructions */}
-              <div className="cart-notes-card">
-                <h3>Special Instructions & Vastu Requirements</h3>
-                <p>Add custom dimension constraints, deity posture requirements, or prayer hall delivery specifics:</p>
-                <textarea 
-                  rows={3}
-                  placeholder="e.g. Please ensure the pedestal height matches our mandir platform (36 inches). Abhaya mudra preferred."
-                  value={orderNote}
-                  onChange={(e) => setOrderNote(e.target.value)}
-                />
+                <div className="cart-footer-actions">
+                  <Link to="/products" className="btn-continue-shopping">
+                    ← Add More Products
+                  </Link>
+                  <button className="btn-clear-cart" onClick={clearCart}>
+                    Clear Entire Bag
+                  </button>
+                </div>
               </div>
             </div>
 
-            {/* Right: Order Summary */}
+            {/* Right Column: Customer Details & WhatsApp Submission */}
             <div className="cart-summary-column">
               <div className="cart-summary-card">
-                <h3 className="summary-title">Order Summary</h3>
+                <div className="summary-header">
+                  <Sparkles size={16} className="text-gold" />
+                  <h2>Submit Quotation Request</h2>
+                </div>
 
-                {/* Coupon Box */}
-                <form onSubmit={applyCoupon} className="coupon-form">
-                  <div className="coupon-input-wrap">
-                    <Tag size={15} className="text-gold" />
-                    <input 
-                      type="text" 
-                      placeholder="Coupon (e.g. MAKRANA10)"
-                      value={couponCode}
-                      onChange={(e) => setCouponCode(e.target.value)}
-                    />
-                    <button type="submit" className="coupon-btn">Apply</button>
-                  </div>
-                </form>
-
-                <div className="summary-lines">
-                  <div className="summary-line">
-                    <span>Sculptures Subtotal</span>
-                    <span>₹ {cartSubtotal.toLocaleString('en-IN')}</span>
-                  </div>
-
-                  {discountAmount > 0 && (
-                    <div className="summary-line text-gold">
-                      <span>Artisanal Discount ({discountPercent}%)</span>
-                      <span>- ₹ {discountAmount.toLocaleString('en-IN')}</span>
+                <form onSubmit={handleSubmitEnquiry} className="enquiry-contact-form">
+                  {!currentUser && (
+                    <div className="guest-auth-prompt">
+                      <span>Have an account?</span>
+                      <button 
+                        type="button" 
+                        className="auth-link-btn"
+                        onClick={() => setIsAuthModalOpen(true)}
+                      >
+                        Sign in for fast auto-fill
+                      </button>
                     </div>
                   )}
 
-                  <div className="summary-line">
-                    <span>Multi-Layer Insured Wooden Crating</span>
-                    <span>
-                      {cratingCost === 0 ? (
-                        <strong className="text-green">FREE</strong>
-                      ) : (
-                        `₹ ${cratingCost.toLocaleString('en-IN')}`
-                      )}
-                    </span>
+                  <div className="form-field">
+                    <label htmlFor="client-name">Your Full Name *</label>
+                    <div className="input-with-icon">
+                      <User size={16} className="input-icon" />
+                      <input 
+                        id="client-name"
+                        type="text" 
+                        required
+                        placeholder="e.g. Vikramaditya Sharma"
+                        value={customerName}
+                        onChange={(e) => setCustomerName(e.target.value)}
+                      />
+                    </div>
                   </div>
 
-                  <div className="summary-line">
-                    <span>Vedic Vastu Quality Inspection</span>
-                    <span className="text-green">COMPLIMENTARY</span>
+                  <div className="form-field">
+                    <label htmlFor="client-phone">WhatsApp Phone Number *</label>
+                    <div className="input-with-icon">
+                      <Phone size={16} className="input-icon" />
+                      <input 
+                        id="client-phone"
+                        type="tel" 
+                        required
+                        placeholder="10-digit mobile number"
+                        value={customerPhone}
+                        onChange={(e) => setCustomerPhone(e.target.value)}
+                      />
+                    </div>
+                    <small className="field-hint">
+                      Admin will log this enquiry and connect with you on WhatsApp.
+                    </small>
                   </div>
 
-                  <div className="summary-line total-line">
-                    <span>Estimated Total</span>
-                    <span className="grand-total-amount">
-                      ₹ {grandTotal.toLocaleString('en-IN')}
-                    </span>
+                  <div className="form-field">
+                    <label htmlFor="client-loc">Project Location (City / State)</label>
+                    <div className="input-with-icon">
+                      <MapPin size={16} className="input-icon" />
+                      <input 
+                        id="client-loc"
+                        type="text" 
+                        placeholder="e.g. Mumbai, Maharashtra"
+                        value={siteLocation}
+                        onChange={(e) => setSiteLocation(e.target.value)}
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <button 
-                  className="btn-primary checkout-action-btn"
-                  onClick={() => navigate('/checkout')}
-                >
-                  <span>Proceed to Secure Checkout</span>
-                  <ArrowRight size={16} />
-                </button>
+                  <div className="form-field">
+                    <label htmlFor="client-notes">Custom Dimensions / Notes</label>
+                    <div className="input-with-icon">
+                      <FileText size={16} className="input-icon" />
+                      <textarea 
+                        id="client-notes"
+                        rows={3}
+                        placeholder="e.g. Sizing requirements, edge profile, Pooja room height..."
+                        value={projectNotes}
+                        onChange={(e) => setProjectNotes(e.target.value)}
+                      />
+                    </div>
+                  </div>
 
-                <Link to="/products" className="continue-shopping-link">
-                  ← Continue Exploring Collections
-                </Link>
+                  {/* Primary Submit Button */}
+                  <button 
+                    type="submit" 
+                    className="btn-submit-whatsapp-quote"
+                    disabled={isSubmitting}
+                  >
+                    <MessageCircle size={20} />
+                    <span>{isSubmitting ? 'Logging Enquiry...' : 'Enquire on WhatsApp'}</span>
+                  </button>
+                </form>
 
-                <div className="cart-security-perks">
-                  <div className="perk-item">
+                {/* Trust Points */}
+                <div className="summary-trust-badges">
+                  <div className="trust-item">
                     <ShieldCheck size={16} className="text-gold" />
-                    <span>100% Certified Makrana White Marble Guarantee</span>
+                    <span>100% Direct Marble Quarry Rates</span>
                   </div>
-                  <div className="perk-item">
+                  <div className="trust-item">
+                    <Sparkles size={16} className="text-gold" />
+                    <span>Free CAD Drawing Consultation</span>
+                  </div>
+                  <div className="trust-item">
                     <Truck size={16} className="text-gold" />
-                    <span>Transit Damage Insurance Included</span>
+                    <span>Insured Wooden Export Crating</span>
                   </div>
                 </div>
               </div>

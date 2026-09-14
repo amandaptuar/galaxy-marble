@@ -1,66 +1,67 @@
 import React from 'react';
-import { Star } from 'lucide-react';
+import { Star, Sparkles, CheckCircle2, Quote } from 'lucide-react';
 import { COMMUNITY } from '../data/siteData';
-
-const InstagramIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-  </svg>
-);
 
 export const CommunityReviews = () => {
   return (
     <section className="community-section" id="community">
       <div className="container">
         <div className="section-title-wrap">
-          <span className="section-tag">Voices of Devotion</span>
-          <h2 className="section-title">The Community</h2>
+          <div className="brand-pill" style={{ margin: '0 auto 12px' }}>
+            <Sparkles size={12} className="text-gold" />
+            <span>Voices of Connoisseurs</span>
+          </div>
+          <h2 className="section-title">Client Commissions & Community</h2>
           <p className="section-subtitle">
-            Hear from architects, interior connoisseurs, and home owners who chose Galaxy Marble for their sacred spaces.
+            Hear from distinguished architects, interior connoisseurs, and estate patrons who entrusted Galaxy Marble with their monumental stone commissions.
           </p>
         </div>
 
         <div className="community-grid">
           {COMMUNITY.map((member, idx) => (
             <div key={idx} className="community-card">
+              {/* Architectural Installation Image */}
               <div className="community-img-wrap">
                 <img 
                   src={member.image} 
                   alt={member.name} 
                   className="community-img"
                   loading="lazy"
+                  onError={(e) => { e.target.src = '/marble-hero-bg.jpg'; }}
                 />
+                <span className="community-tag-badge">
+                  <CheckCircle2 size={12} />
+                  <span>{member.tag || 'Verified Commission'}</span>
+                </span>
               </div>
 
+              {/* Reviewer & Project Details */}
               <div className="community-info">
-                <div style={{ display: 'flex', gap: 3, marginBottom: 10, color: '#f59e0b' }}>
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={14} fill="#f59e0b" />
-                  ))}
+                <div className="community-rating-row">
+                  <div className="star-row">
+                    {[...Array(member.rating || 5)].map((_, i) => (
+                      <Star key={i} size={14} fill="#d4af37" color="#d4af37" />
+                    ))}
+                  </div>
+                  <span className="verified-patron-badge">Verified Commission</span>
                 </div>
 
-                <p className="community-quote">{member.quote}</p>
+                <div className="community-quote-wrap">
+                  <Quote size={18} className="quote-icon" />
+                  <p className="community-quote">{member.quote}</p>
+                </div>
                 
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
+                <div className="community-patron-footer">
+                  <img 
+                    src={member.avatar || member.image} 
+                    alt={member.name} 
+                    className="community-patron-avatar"
+                    onError={(e) => { e.target.src = '/marble-hero-bg.jpg'; }}
+                  />
                   <div>
                     <h3 className="community-name">{member.name}</h3>
-                    <p className="community-role">{member.role}</p>
+                    <p className="community-role">{member.role || member.location}</p>
                   </div>
-
-                  {member.instagram && (
-                    <a 
-                      href={member.instagram} 
-                      target="_blank" 
-                      rel="noreferrer" 
-                      style={{ color: '#b8860b' }}
-                      title="View on Instagram"
-                      aria-label="Instagram post"
-                    >
-                      <InstagramIcon />
-                    </a>
-                  )}
                 </div>
               </div>
             </div>

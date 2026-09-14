@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Menu, Search, Heart, ShoppingBag } from 'lucide-react';
+import { Menu, Search, ShieldCheck } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 
 const NAV_ITEMS = [
@@ -24,13 +24,8 @@ const NAV_ITEMS = [
 
 export const Header = () => {
   const { 
-    totalCartCount, 
-    setIsCartOpen, 
-    wishlist, 
-    setIsWishlistOpen,
     setIsSearchOpen,
-    setIsMobileMenuOpen,
-    setIsConsultationOpen
+    setIsMobileMenuOpen
   } = useStore();
 
   const [isScrolled, setIsScrolled] = useState(false);
@@ -79,7 +74,7 @@ export const Header = () => {
               </button>
             </div>
 
-            {/* Center: Mobile logo OR Desktop Nav Links (Home, Products, About, Contact) */}
+            {/* Center: Mobile logo OR Desktop Nav Links */}
             <div className="header-center">
               {/* Mobile Centered Logo */}
               <Link to="/" className="header-logo mobile-only" aria-label="Galaxy Marble Home">
@@ -103,14 +98,24 @@ export const Header = () => {
                       </NavLink>
                     </li>
                   ))}
+                  {/* Quick link to Admin */}
+                  <li className="nav-item">
+                    <NavLink 
+                      to="/admin" 
+                      className={({ isActive }) => `nav-link admin-nav-link ${isActive ? 'active' : ''}`}
+                    >
+                      <ShieldCheck size={13} style={{ display: 'inline', marginRight: 4 }} />
+                      <span>Admin</span>
+                    </NavLink>
+                  </li>
                 </ul>
               </nav>
             </div>
 
-            {/* Right: Search, Wishlist, Cart */}
+            {/* Right: Search & Direct WhatsApp Enquire */}
             <div className="header-right">
               <button 
-                className="icon-btn desktop-only" 
+                className="icon-btn" 
                 onClick={() => setIsSearchOpen(true)}
                 title="Search Products"
                 aria-label="Search site"
@@ -118,29 +123,15 @@ export const Header = () => {
                 <Search size={19} />
               </button>
 
-              <button 
-                className="icon-btn" 
-                onClick={() => setIsWishlistOpen(true)}
-                title="View Wishlist"
-                aria-label="Wishlist"
+              <a 
+                href="https://wa.me/919929288880?text=Hello%20Galaxy%20Marble%2C%20I%20would%20like%20to%20enquire%20about%20your%20bespoke%20marble%20crafts." 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="header-whatsapp-cta desktop-only"
+                title="Consult with Master Craftsman"
               >
-                <Heart size={20} />
-                {wishlist.length > 0 && (
-                  <span className="badge-count">{wishlist.length}</span>
-                )}
-              </button>
-
-              <button 
-                className="icon-btn" 
-                onClick={() => setIsCartOpen(true)}
-                title="View Shopping Cart"
-                aria-label="Shopping Cart"
-              >
-                <ShoppingBag size={20} />
-                {totalCartCount > 0 && (
-                  <span className="badge-count">{totalCartCount}</span>
-                )}
-              </button>
+                <span>Enquire Now</span>
+              </a>
             </div>
           </div>
         </div>

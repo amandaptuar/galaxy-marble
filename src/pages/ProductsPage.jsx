@@ -1,80 +1,127 @@
-import React, { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import { Filter, X, SlidersHorizontal, ArrowUpDown, Check, Sparkles, RefreshCw, ChevronRight } from 'lucide-react';
-import { CATALOG_PRODUCTS } from '../data/siteData';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams, Link } from 'react-router-dom';
+import { 
+  Filter, X, Check, Sparkles, RefreshCw, ChevronRight, 
+  Search, SlidersHorizontal, CheckSquare, Square, ChevronDown 
+} from 'lucide-react';
+import { useStore } from '../context/StoreContext';
 import { ProductCard } from '../components/ProductCard';
-
-const CATEGORIES = ['All', 'Deity Murtis', 'Temples', 'Furniture', 'Home Decor'];
-const STONE_TYPES = ['All', 'Pure Makrana White', 'Vietnam Crystal White', 'Black Banswara', 'Jade Onyx'];
-const PRICE_RANGES = [
-  { label: 'All Prices', min: 0, max: Infinity },
-  { label: 'Under ₹ 50,000', min: 0, max: 50000 },
-  { label: '₹ 50,000 - ₹ 1,50,000', min: 50000, max: 150000 },
-  { label: '₹ 1,50,000 - ₹ 3,00,000', min: 150000, max: 300000 },
-  { label: 'Above ₹ 3,00,000', min: 300000, max: Infinity },
-];
+import { ARCHITECTURAL_CATEGORIES, normalizeCategory } from '../data/siteData';
 
 export function ProductsPage() {
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [selectedStone, setSelectedStone] = useState('All');
-  const [selectedPriceRange, setSelectedPriceRange] = useState(0);
-  const [inStockOnly, setInStockOnly] = useState(false);
-  const [sortBy, setSortBy] = useState('featured');
-  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { products, isLoadingProducts } = useStore();
+
+  // Multi-select categories state
+  const [selectedCategories, setSelectedCategories] = useState(() => {
+    const catParam = searchParams.get('category');
+    if (!catParam) return [];
+    return catParam.split(',').map(c => normalizeCategory(decodeURIComponent(c)));
+  });
+
+  // Search query
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Filter products logic
+  // Sort By
+  const [sortBy, setSortBy] = useState('featured');
+
+  // Mobile drawer state
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+
+  // Sync category from URL param if changed externally
+  useEffect(() => {
+    const catParam = searchParams.get('category');
+    if (catParam) {
+      const cats = catParam.split(',').map(c => normalizeCategory(decodeURIComponent(c)));
+      setSelectedCategories(cats);
+    } else {
+      setSelectedCategories([]);
+    }
+  }, [searchParams]);
+
+  // Extract strictly the 9 curated architectural categories with product counts
+  const categoryList = useMemo(() => {
+    const map = new Map();
+    // Default allowed categories strictly in defined order
+    ARCHITECTURAL_CATEGORIES.forEach(c => map.set(c.title.toUpperCase(), 0));
+
+    // Count products per allowed category
+    products.forEach(p => {
+      const cat = normalizeCategory(p.category);
+      if (map.has(cat)) {
+        map.set(cat, map.get(cat) + 1);
+      }
+    });
+
+    return Array.from(map.entries()).map(([name, count]) => ({
+      name,
+      count
+    }));
+  }, [products]);
+
+  // Category Toggle Handler (Multi-select)
+  const handleCategoryToggle = (catName) => {
+    const norm = normalizeCategory(catName);
+    setSelectedCategories(prev => {
+      if (prev.includes(norm)) {
+        const next = prev.filter(c => c !== norm);
+        if (next.length === 0) {
+          setSearchParams({});
+        } else {
+          setSearchParams({ category: next.join(',') });
+        }
+        return next;
+      } else {
+        const next = [...prev, norm];
+        setSearchParams({ category: next.join(',') });
+        return next;
+      }
+    });
+  };
+
+  // Reset all filters
+  const resetAllFilters = () => {
+    setSelectedCategories([]);
+    setSearchQuery('');
+    setSearchParams({});
+  };
+
+  // Filtered Products Logic (Category & Search only)
   const filteredProducts = useMemo(() => {
-    return CATALOG_PRODUCTS.filter((prod) => {
-      // Category filter
-      if (selectedCategory !== 'All' && prod.category !== selectedCategory) {
-        return false;
-      }
-      // Stone filter
-      if (selectedStone !== 'All' && prod.stoneType !== selectedStone) {
-        return false;
-      }
-      // In-stock filter
-      if (inStockOnly && !prod.inStock) {
-        return false;
-      }
-      // Price range
-      const range = PRICE_RANGES[selectedPriceRange];
-      if (range && (prod.numericPrice < range.min || prod.numericPrice > range.max)) {
-        return false;
-      }
-      // Search query
-      if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase();
-        const matchTitle = prod.title.toLowerCase().includes(q);
-        const matchSku = prod.sku && prod.sku.toLowerCase().includes(q);
-        const matchCat = prod.category && prod.category.toLowerCase().includes(q);
-        if (!matchTitle && !matchSku && !matchCat) {
+    return products.filter((prod) => {
+      const prodCategory = normalizeCategory(prod.category);
+
+      // Category filter (multi-select)
+      if (selectedCategories.length > 0) {
+        const normalizedSelected = selectedCategories.map(normalizeCategory);
+        if (!normalizedSelected.includes(prodCategory)) {
           return false;
         }
       }
+
+      // Search query filter
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase();
+        const matchTitle = prod.title?.toLowerCase().includes(q);
+        const matchSku = prod.sku?.toLowerCase().includes(q);
+        const matchCat = prodCategory.toLowerCase().includes(q);
+        const matchDesc = prod.description?.toLowerCase().includes(q);
+
+        if (!matchTitle && !matchSku && !matchCat && !matchDesc) {
+          return false;
+        }
+      }
+
       return true;
     }).sort((a, b) => {
-      if (sortBy === 'price-asc') return a.numericPrice - b.numericPrice;
-      if (sortBy === 'price-desc') return b.numericPrice - a.numericPrice;
+      if (sortBy === 'name-asc') return (a.title || '').localeCompare(b.title || '');
+      if (sortBy === 'name-desc') return (b.title || '').localeCompare(a.title || '');
       if (sortBy === 'rating') return (b.rating || 5) - (a.rating || 5);
       return 0; // featured
     });
-  }, [selectedCategory, selectedStone, selectedPriceRange, inStockOnly, sortBy, searchQuery]);
+  }, [products, selectedCategories, searchQuery, sortBy]);
 
-  const activeFilterCount = (selectedCategory !== 'All' ? 1 : 0) +
-    (selectedStone !== 'All' ? 1 : 0) +
-    (selectedPriceRange !== 0 ? 1 : 0) +
-    (inStockOnly ? 1 : 0) +
-    (searchQuery ? 1 : 0);
-
-  const resetFilters = () => {
-    setSelectedCategory('All');
-    setSelectedStone('All');
-    setSelectedPriceRange(0);
-    setInStockOnly(false);
-    setSearchQuery('');
-  };
+  const activeFilterCount = selectedCategories.length + (searchQuery ? 1 : 0);
 
   return (
     <div className="catalog-page-wrap">
@@ -85,10 +132,10 @@ export function ProductsPage() {
             <Link to="/">Home</Link>
             <ChevronRight size={14} className="crumb-sep" />
             <span>Products</span>
-            {selectedCategory !== 'All' && (
+            {selectedCategories.length === 1 && (
               <>
                 <ChevronRight size={14} className="crumb-sep" />
-                <span className="crumb-active">{selectedCategory}</span>
+                <span className="crumb-active">{selectedCategories[0]}</span>
               </>
             )}
           </nav>
@@ -96,195 +143,219 @@ export function ProductsPage() {
           <div className="catalog-hero-content">
             <span className="section-tag">
               <Sparkles size={12} style={{ display: 'inline', marginRight: 4 }} />
-              Artisanal Stone Collection
+              Bespoke Architectural Collection
             </span>
-            <h1 className="catalog-title">Luxury Makrana Marble Masterpieces</h1>
-            <p className="catalog-desc">
-              Explore meticulously hand-carved deities, custom pooja room mandirs, and luxury architectural stone decor. Each artwork is sculpted in 100% genuine Makrana marble with certified generational durability.
+            <h1 className="catalog-page-title">Handcrafted Stone Masterpieces</h1>
+            <p className="catalog-page-desc">
+              Discover pure Makrana marble slabs, hand-sculpted temple sanctums, luxury stone furniture, and architectural mantels. Direct quarry pricing on enquiry.
             </p>
           </div>
         </div>
       </div>
 
-      {/* Catalog Main Layout */}
-      <div className="container catalog-body">
-        <div className="catalog-layout">
-          {/* Desktop Filter Sidebar */}
-          <aside className="catalog-sidebar hidden md:block">
-            <div className="sidebar-header">
-              <div className="sidebar-title">
-                <SlidersHorizontal size={18} className="text-gold" />
-                <span>Filters & Refine</span>
-              </div>
+      {/* Main Catalog Body */}
+      <div className="container catalog-body-container">
+        {/* Mobile Filter & Sort Bar */}
+        <div className="catalog-mobile-controls">
+          <button 
+            className="btn-mobile-filter-trigger"
+            onClick={() => setIsMobileFilterOpen(true)}
+          >
+            <SlidersHorizontal size={16} />
+            <span>Filters {activeFilterCount > 0 && `(${activeFilterCount})`}</span>
+          </button>
+
+          <div className="catalog-sort-compact">
+            <select 
+              value={sortBy} 
+              onChange={(e) => setSortBy(e.target.value)}
+              aria-label="Sort by"
+            >
+              <option value="featured">Sort: Featured</option>
+              <option value="rating">Sort: Top Rated</option>
+              <option value="name-asc">Sort: Name (A-Z)</option>
+              <option value="name-desc">Sort: Name (Z-A)</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="catalog-grid-layout">
+          {/* ============================================================ */}
+          {/* ARCHITECTURAL FILTER SIDEBAR (Desktop)                       */}
+          {/* ============================================================ */}
+          <aside className="catalog-filter-sidebar" aria-label="Product Filters">
+            <div className="filter-sidebar-header">
+              <h3 className="filter-sidebar-title">
+                <SlidersHorizontal size={16} className="text-gold" />
+                <span>Filter By</span>
+              </h3>
               {activeFilterCount > 0 && (
-                <button className="clear-filter-btn" onClick={resetFilters}>
-                  Reset All ({activeFilterCount})
+                <button 
+                  className="btn-clear-filters-link"
+                  onClick={resetAllFilters}
+                >
+                  Clear All
                 </button>
               )}
             </div>
 
-            {/* Category Filter */}
-            <div className="filter-group">
-              <h3 className="filter-group-title">Categories</h3>
-              <ul className="filter-list">
-                {CATEGORIES.map((cat) => (
-                  <li key={cat}>
-                    <button
-                      className={`filter-pill-btn ${selectedCategory === cat ? 'active' : ''}`}
-                      onClick={() => setSelectedCategory(cat)}
-                    >
-                      <span>{cat}</span>
-                      {selectedCategory === cat && <Check size={14} />}
-                    </button>
-                  </li>
-                ))}
-              </ul>
+            {/* Instant Search in Catalog */}
+            <div className="filter-search-box">
+              <Search size={15} className="filter-search-icon" />
+              <input 
+                type="text" 
+                placeholder="Search products..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="filter-search-input"
+              />
+              {searchQuery && (
+                <button 
+                  className="filter-search-clear" 
+                  onClick={() => setSearchQuery('')}
+                  title="Clear"
+                >
+                  <X size={13} />
+                </button>
+              )}
             </div>
 
-            {/* Stone Type Filter */}
-            <div className="filter-group">
-              <h3 className="filter-group-title">Natural Stone Type</h3>
-              <ul className="filter-list">
-                {STONE_TYPES.map((stone) => (
-                  <li key={stone}>
-                    <button
-                      className={`filter-pill-btn ${selectedStone === stone ? 'active' : ''}`}
-                      onClick={() => setSelectedStone(stone)}
-                    >
-                      <span>{stone}</span>
-                      {selectedStone === stone && <Check size={14} />}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
 
-            {/* Price Range */}
-            <div className="filter-group">
-              <h3 className="filter-group-title">Price Range</h3>
-              <div className="radio-filter-list">
-                {PRICE_RANGES.map((rng, idx) => (
-                  <label key={idx} className="filter-radio-label">
-                    <input
-                      type="radio"
-                      name="priceRange"
-                      checked={selectedPriceRange === idx}
-                      onChange={() => setSelectedPriceRange(idx)}
-                    />
-                    <span>{rng.label}</span>
+            {/* CATEGORY FILTER (Simple Clean Filter) */}
+            <div className="amazon-filter-group">
+              <h4 className="amazon-filter-group-title">
+                <span>CATEGORIES</span>
+              </h4>
+              <ul className="amazon-checkbox-list">
+                {/* All Categories Option */}
+                <li className="amazon-checkbox-item">
+                  <label 
+                    className={`amazon-checkbox-label ${selectedCategories.length === 0 ? 'active' : ''}`}
+                    onClick={() => {
+                      setSelectedCategories([]);
+                      setSearchParams({});
+                    }}
+                  >
+                    <span className={`amazon-custom-checkbox ${selectedCategories.length === 0 ? 'checked' : ''}`}>
+                      {selectedCategories.length === 0 && <Check size={12} strokeWidth={3} />}
+                    </span>
+                    <span className="amazon-filter-text">ALL CATEGORIES</span>
+                    <span className="amazon-filter-count">({products.length})</span>
                   </label>
-                ))}
-              </div>
+                </li>
+
+                {categoryList.map((cat) => {
+                  const isChecked = selectedCategories.includes(cat.name);
+                  return (
+                    <li key={cat.name} className="amazon-checkbox-item">
+                      <label 
+                        className={`amazon-checkbox-label ${isChecked ? 'active' : ''}`}
+                        onClick={() => handleCategoryToggle(cat.name)}
+                      >
+                        <span className={`amazon-custom-checkbox ${isChecked ? 'checked' : ''}`}>
+                          {isChecked && <Check size={12} strokeWidth={3} />}
+                        </span>
+                        <span className="amazon-filter-text">{cat.name}</span>
+                        <span className="amazon-filter-count">({cat.count})</span>
+                      </label>
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
 
-            {/* In Stock Toggle */}
-            <div className="filter-group">
-              <label className="checkbox-filter-label">
-                <input
-                  type="checkbox"
-                  checked={inStockOnly}
-                  onChange={(e) => setInStockOnly(e.target.checked)}
-                />
-                <span>Show In-Stock Ready to Ship Only</span>
-              </label>
+            {/* PROMPT NOTE */}
+            <div className="amazon-filter-callout">
+              <p>
+                <strong>Need Custom Carving?</strong> All marble basins, mandirs, water fountains, and wall panels can be hand-sculpted to your custom CAD drawings.
+              </p>
             </div>
           </aside>
 
-          {/* Catalog Content Area */}
-          <main className="catalog-main">
-            {/* Top Controls Bar */}
-            <div className="catalog-top-bar">
-              <div className="catalog-count-wrap">
-                <p className="catalog-count-text">
-                  Showing <strong>{filteredProducts.length}</strong> of <strong>{CATALOG_PRODUCTS.length}</strong> luxury creations
-                </p>
-                {/* Mobile filter trigger */}
-                <button
-                  className="mobile-filter-trigger md:hidden"
-                  onClick={() => setIsMobileFilterOpen(true)}
-                  aria-label="Open Filters"
-                >
-                  <Filter size={16} />
-                  <span>Filters {activeFilterCount > 0 && `(${activeFilterCount})`}</span>
-                </button>
+          {/* ============================================================ */}
+          {/* MAIN PRODUCT LISTING COLUMN                                  */}
+          {/* ============================================================ */}
+          <main className="catalog-products-column">
+            {/* Top Toolbar */}
+            <div className="catalog-results-toolbar">
+              <div className="toolbar-left">
+                <span className="results-count-text">
+                  Showing <strong>{filteredProducts.length}</strong> of <strong>{products.length}</strong> masterpieces
+                </span>
               </div>
 
-              <div className="catalog-sort-wrap">
-                <label htmlFor="sort-select" className="sort-label">
-                  <ArrowUpDown size={14} />
-                  <span>Sort By:</span>
-                </label>
-                <select
-                  id="sort-select"
-                  className="sort-select"
-                  value={sortBy}
+              <div className="toolbar-right catalog-desktop-sort">
+                <label htmlFor="catalog-sort" className="sort-label">Sort by:</label>
+                <select 
+                  id="catalog-sort"
+                  value={sortBy} 
                   onChange={(e) => setSortBy(e.target.value)}
+                  className="catalog-sort-select"
                 >
-                  <option value="featured">Featured Artisanal</option>
-                  <option value="price-asc">Price: Low to High</option>
-                  <option value="price-desc">Price: High to Low</option>
-                  <option value="rating">Highest Customer Rating</option>
+                  <option value="featured">Featured Collection</option>
+                  <option value="rating">Customer Rating</option>
+                  <option value="name-asc">Alphabetical (A - Z)</option>
+                  <option value="name-desc">Alphabetical (Z - A)</option>
                 </select>
               </div>
             </div>
 
-            {/* Active Filter Chips */}
+            {/* Active Filters Bar */}
             {activeFilterCount > 0 && (
-              <div className="active-chips-wrap">
-                {selectedCategory !== 'All' && (
-                  <span className="filter-chip">
-                    Category: {selectedCategory}
-                    <button onClick={() => setSelectedCategory('All')}>
-                      <X size={13} />
-                    </button>
-                  </span>
-                )}
-                {selectedStone !== 'All' && (
-                  <span className="filter-chip">
-                    Stone: {selectedStone}
-                    <button onClick={() => setSelectedStone('All')}>
-                      <X size={13} />
-                    </button>
-                  </span>
-                )}
-                {selectedPriceRange !== 0 && (
-                  <span className="filter-chip">
-                    {PRICE_RANGES[selectedPriceRange].label}
-                    <button onClick={() => setSelectedPriceRange(0)}>
-                      <X size={13} />
-                    </button>
-                  </span>
-                )}
-                {inStockOnly && (
-                  <span className="filter-chip">
-                    In Stock Only
-                    <button onClick={() => setInStockOnly(false)}>
-                      <X size={13} />
-                    </button>
-                  </span>
-                )}
-                <button className="reset-chips-btn" onClick={resetFilters}>
-                  <RefreshCw size={12} /> Clear all
-                </button>
+              <div className="active-filters-chips-bar">
+                <span className="chips-label">Active Filters:</span>
+                <div className="chips-container">
+                  {selectedCategories.map(cat => (
+                    <span key={cat} className="filter-chip">
+                      <span>Category: {cat}</span>
+                      <button onClick={() => handleCategoryToggle(cat)}>
+                        <X size={12} />
+                      </button>
+                    </span>
+                  ))}
+                  {searchQuery && (
+                    <span className="filter-chip">
+                      <span>Search: "{searchQuery}"</span>
+                      <button onClick={() => setSearchQuery('')}>
+                        <X size={12} />
+                      </button>
+                    </span>
+                  )}
+                  <button className="btn-clear-all-chips" onClick={resetAllFilters}>
+                    Clear All
+                  </button>
+                </div>
               </div>
             )}
 
-            {/* Product Grid */}
-            {filteredProducts.length === 0 ? (
-              <div className="catalog-empty-state">
-                <div className="empty-icon-wrap">
-                  <SlidersHorizontal size={40} className="text-gold" />
-                </div>
-                <h3>No Artworks Match Your Selected Criteria</h3>
-                <p>Try clearing some filters or exploring our full collection of marble sculptures.</p>
-                <button className="btn-primary" onClick={resetFilters} style={{ marginTop: 20 }}>
-                  Reset All Filters
+            {/* Products Grid */}
+            {isLoadingProducts ? (
+              <div className="catalog-loading-box">
+                <RefreshCw size={28} className="animate-spin text-gold" />
+                <p>Loading luxury architectural catalog...</p>
+              </div>
+            ) : products.length === 0 ? (
+              <div className="catalog-no-results">
+                <Sparkles size={48} className="no-res-icon" />
+                <h3>Catalog Being Updated</h3>
+                <p>All dummy products have been removed. Real marble pieces will appear here immediately once published in the Admin Portal.</p>
+                <Link to="/contact" className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, margin: '16px auto 0' }}>
+                  <span>Request Custom Quarry Order</span>
+                </Link>
+              </div>
+            ) : filteredProducts.length === 0 ? (
+              <div className="catalog-no-results">
+                <Sparkles size={48} className="no-res-icon" />
+                <h3>No Matching Masterpieces Found</h3>
+                <p>Try selecting another category or resetting your search filter.</p>
+                <button className="btn-primary" onClick={resetAllFilters}>
+                  Show All Categories
                 </button>
               </div>
             ) : (
-              <div className="products-grid">
-                {filteredProducts.map((prod) => (
-                  <ProductCard key={prod.id} product={prod} />
+              <div className="catalog-product-grid">
+                {filteredProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} />
                 ))}
               </div>
             )}
@@ -292,94 +363,80 @@ export function ProductsPage() {
         </div>
       </div>
 
-      {/* Mobile Filter Slide-over Drawer */}
+      {/* ============================================================ */}
+      {/* MOBILE FILTER DRAWER                                         */}
+      {/* ============================================================ */}
       {isMobileFilterOpen && (
-        <div className="drawer-overlay open" onClick={() => setIsMobileFilterOpen(false)}>
-          <div className="mobile-filter-drawer" onClick={(e) => e.stopPropagation()}>
+        <div className="drawer-overlay" onClick={() => setIsMobileFilterOpen(false)}>
+          <div 
+            className="drawer-panel drawer-left mobile-filter-drawer"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="drawer-header">
-              <div className="drawer-title-wrap">
-                <Filter size={18} className="text-gold" />
-                <h3>Filter Products</h3>
-              </div>
+              <h3>Filter By Category</h3>
               <button 
-                className="icon-btn" 
+                className="drawer-close-btn"
                 onClick={() => setIsMobileFilterOpen(false)}
-                aria-label="Close filters"
               >
                 <X size={20} />
               </button>
             </div>
 
             <div className="drawer-body">
-              {/* Category */}
-              <div className="filter-group">
-                <h4 className="filter-group-title">Categories</h4>
-                <div className="filter-chips-grid">
-                  {CATEGORIES.map((cat) => (
-                    <button
-                      key={cat}
-                      className={`filter-pill-btn ${selectedCategory === cat ? 'active' : ''}`}
-                      onClick={() => setSelectedCategory(cat)}
+              {/* Category Filter Only */}
+              <div className="amazon-filter-group">
+                <h4 className="amazon-filter-group-title">CATEGORIES</h4>
+                <ul className="amazon-checkbox-list">
+                  {/* All Categories Option */}
+                  <li className="amazon-checkbox-item">
+                    <label 
+                      className={`amazon-checkbox-label ${selectedCategories.length === 0 ? 'active' : ''}`}
+                      onClick={() => {
+                        setSelectedCategories([]);
+                        setSearchParams({});
+                      }}
                     >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Stone Type */}
-              <div className="filter-group">
-                <h4 className="filter-group-title">Natural Stone Type</h4>
-                <div className="filter-chips-grid">
-                  {STONE_TYPES.map((stone) => (
-                    <button
-                      key={stone}
-                      className={`filter-pill-btn ${selectedStone === stone ? 'active' : ''}`}
-                      onClick={() => setSelectedStone(stone)}
-                    >
-                      {stone}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Price Range */}
-              <div className="filter-group">
-                <h4 className="filter-group-title">Price Range</h4>
-                <div className="radio-filter-list">
-                  {PRICE_RANGES.map((rng, idx) => (
-                    <label key={idx} className="filter-radio-label">
-                      <input
-                        type="radio"
-                        name="mobilePriceRange"
-                        checked={selectedPriceRange === idx}
-                        onChange={() => setSelectedPriceRange(idx)}
-                      />
-                      <span>{rng.label}</span>
+                      <span className={`amazon-custom-checkbox ${selectedCategories.length === 0 ? 'checked' : ''}`}>
+                        {selectedCategories.length === 0 && <Check size={12} strokeWidth={3} />}
+                      </span>
+                      <span className="amazon-filter-text">ALL CATEGORIES</span>
+                      <span className="amazon-filter-count">({products.length})</span>
                     </label>
-                  ))}
-                </div>
-              </div>
+                  </li>
 
-              {/* In Stock */}
-              <div className="filter-group">
-                <label className="checkbox-filter-label">
-                  <input
-                    type="checkbox"
-                    checked={inStockOnly}
-                    onChange={(e) => setInStockOnly(e.target.checked)}
-                  />
-                  <span>In-Stock Ready to Ship Only</span>
-                </label>
+                  {categoryList.map((cat) => {
+                    const isChecked = selectedCategories.includes(cat.name);
+                    return (
+                      <li key={cat.name} className="amazon-checkbox-item">
+                        <label 
+                          className={`amazon-checkbox-label ${isChecked ? 'active' : ''}`}
+                          onClick={() => handleCategoryToggle(cat.name)}
+                        >
+                          <span className={`amazon-custom-checkbox ${isChecked ? 'checked' : ''}`}>
+                            {isChecked && <Check size={12} strokeWidth={3} />}
+                          </span>
+                          <span className="amazon-filter-text">{cat.name}</span>
+                          <span className="amazon-filter-count">({cat.count})</span>
+                        </label>
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
             </div>
 
-            <div className="drawer-footer">
-              <button className="btn-outline" onClick={resetFilters} style={{ flex: 1 }}>
+            <div className="drawer-footer mobile-filter-footer">
+              <button 
+                className="btn-outline-clear"
+                onClick={resetAllFilters}
+              >
                 Reset
               </button>
-              <button className="btn-primary" onClick={() => setIsMobileFilterOpen(false)} style={{ flex: 2 }}>
-                Show Results ({filteredProducts.length})
+              <button 
+                className="btn-primary-apply"
+                onClick={() => setIsMobileFilterOpen(false)}
+              >
+                View {filteredProducts.length} Results
               </button>
             </div>
           </div>
