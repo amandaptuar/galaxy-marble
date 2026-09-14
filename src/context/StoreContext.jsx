@@ -245,10 +245,17 @@ export const StoreProvider = ({ children }) => {
       console.warn('Enquiry creation error:', e);
     }
 
-    // 4. Format WhatsApp Message with product image URL
-    const productImageUrl = product.image
-      ? `${window.location.origin}${product.image.startsWith('/') ? '' : '/'}${product.image}`
-      : '';
+    // 4. Format WhatsApp Message with production domain image URL
+    const siteDomain = WHATSAPP_CONFIG.SITE_URL || 'https://galaxy-marble.netlify.app';
+    let productImageUrl = '';
+    if (product.image) {
+      if (product.image.startsWith('http://') || product.image.startsWith('https://')) {
+        productImageUrl = product.image;
+      } else {
+        const cleanPath = product.image.startsWith('/') ? product.image : `/${product.image}`;
+        productImageUrl = `${siteDomain}${encodeURI(cleanPath)}`;
+      }
+    }
 
     const text = encodeURIComponent(
       `🏛️ *Galaxy Marble - Product Enquiry*\n\n` +
@@ -256,8 +263,8 @@ export const StoreProvider = ({ children }) => {
       `*Category:* ${(product.category || '').toUpperCase()}\n` +
       `*SKU:* ${product.sku || 'N/A'}\n` +
       `*Stone Type:* ${product.stone_type || product.stoneType || 'Makrana Natural'}\n` +
-      `*Dimensions:* ${product.dimensions || 'Custom'}\n\n` +
-      (productImageUrl ? `📸 *Product Image:* ${productImageUrl}\n\n` : '') +
+      `*Dimensions:* ${product.dimensions || 'Custom Sizing Available'}\n\n` +
+      (productImageUrl ? `📸 *Photo Link:* ${productImageUrl}\n\n` : '') +
       (customMessage ? `*Customer Note:* ${customMessage}\n\n` : '') +
       `*Customer Name:* ${customerName}\n` +
       `*Phone:* ${customerPhone}\n\n` +
@@ -280,6 +287,7 @@ export const StoreProvider = ({ children }) => {
 
     const customerName = name || (currentUser ? currentUser.full_name : 'Valued Patron');
     const customerPhone = phone || (currentUser ? currentUser.phone : 'Not provided');
+    const siteDomain = WHATSAPP_CONFIG.SITE_URL || 'https://galaxy-marble.netlify.app';
 
     // 1. Save each product or aggregated enquiry in Supabase
     try {
@@ -299,16 +307,27 @@ export const StoreProvider = ({ children }) => {
       console.warn('Error recording bulk cart enquiry:', e);
     }
 
-    // 2. Format WhatsApp Message with itemized list
+    // 2. Format WhatsApp Message with itemized list and full domain image links
     const itemsList = cart
-      .map((item, idx) => `${idx + 1}. *${item.title}* (${item.category || ''}) - Qty: ${item.quantity}`)
-      .join('\n');
+      .map((item, idx) => {
+        let itemImg = '';
+        if (item.image) {
+          if (item.image.startsWith('http://') || item.image.startsWith('https://')) {
+            itemImg = item.image;
+          } else {
+            const cleanPath = item.image.startsWith('/') ? item.image : `/${item.image}`;
+            itemImg = `${siteDomain}${encodeURI(cleanPath)}`;
+          }
+        }
+        return `${idx + 1}. *${item.title}* (${(item.category || '').toUpperCase()}) - Qty: ${item.quantity}${itemImg ? `\n   📸 Photo: ${itemImg}` : ''}`;
+      })
+      .join('\n\n');
 
     const text = encodeURIComponent(
       `🏛️ *Galaxy Marble - Quotation Request*\n\n` +
       `*Enquiry Patron:* ${customerName}\n` +
       `*Contact Phone:* ${customerPhone}\n\n` +
-      `*Requested Masterpieces:*\n${itemsList}\n\n` +
+      `*Requested Masterpieces:*\n\n${itemsList}\n\n` +
       (notes ? `*Project Specifications:* ${notes}\n\n` : '') +
       `Please provide the official architectural quotation and freight timeline.`
     );
@@ -317,6 +336,7 @@ export const StoreProvider = ({ children }) => {
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
     showToast('Official quote enquiry submitted to admin & WhatsApp opened!');
   };
+
 
   return (
     <StoreContext.Provider

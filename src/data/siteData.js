@@ -1154,8 +1154,10 @@ export const WHATSAPP_CONFIG = {
   PHONE_NUMBER: "919057206605", // Admin WhatsApp number with country code
   DISPLAY_PHONE: "+91 90572 06605",
   EMAIL: "contact@galaxymarble.com",
-  ADMIN_EMAIL: "admin@galaxymarble.com"
+  ADMIN_EMAIL: "admin@galaxymarble.com",
+  SITE_URL: "https://galaxy-marble.netlify.app"
 };
+
 
 
 // Curated Architectural Collections - 10 Core Disciplines with Real Folder Photos
