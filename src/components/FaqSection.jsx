@@ -61,14 +61,15 @@ export const FaqSection = () => {
             </div>
           </div>
           <a
-            href="https://wa.me/919414000000?text=Hello%20Galaxy%20Marble,%20I%20have%20a%20question%20regarding%20marble%20customization%20and%20crating."
+            href="https://wa.me/919057206605?text=Hello%20Galaxy%20Marble,%20I%20have%20a%20question%20regarding%20marble%20customization%20and%20crating."
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-primary btn-sm faq-contact-btn"
           >
             <MessageCircle size={16} />
-            <span>Chat on WhatsApp</span>
+            <span>Chat on WhatsApp (+91 90572 06605)</span>
           </a>
+
         </div>
       </div>
     </section>

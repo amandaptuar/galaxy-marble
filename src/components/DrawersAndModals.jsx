@@ -470,12 +470,12 @@ export const DrawersAndModals = () => {
                   </button>
 
                   <a 
-                    href="tel:+919929288880"
+                    href="tel:+919057206605"
                     className="btn-call-consultation"
                     onClick={() => setQuickViewProduct(null)}
                   >
                     <Phone size={17} />
-                    <span>Call +91 99292 88880</span>
+                    <span>Call +91 90572 06605</span>
                   </a>
                 </div>
               </div>
@@ -586,7 +586,7 @@ export const DrawersAndModals = () => {
                 <input 
                   type="tel" 
                   required
-                  placeholder="+91 98290 12345"
+                  placeholder="+91 90572 06605"
                   value={consultForm.phone}
                   onChange={(e) => setConsultForm({ ...consultForm, phone: e.target.value })}
                 />
@@ -676,7 +676,6 @@ export const DrawersAndModals = () => {
               <Link to="/cart" onClick={() => setIsMobileMenuOpen(false)}>Enquiry Bag ({cart.length})</Link>
               <Link to="/about" onClick={() => setIsMobileMenuOpen(false)}>About Our Heritage</Link>
               <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact Artisans</Link>
-              <Link to="/admin" onClick={() => setIsMobileMenuOpen(false)} className="text-gold">Admin Panel</Link>
             </div>
           </div>
         </div>

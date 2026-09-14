@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
 import { HERO_SLIDES } from '../data/siteData';
 
 export const HeroSlider = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % HERO_SLIDES.length);
@@ -13,18 +15,38 @@ export const HeroSlider = () => {
     setCurrentIndex((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
   }, []);
 
-  // Automatic carousel transition every 4.2 seconds
+  // Automatic carousel transition every 5 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % HERO_SLIDES.length);
-    }, 4200);
+    }, 5000);
     return () => clearInterval(timer);
   }, [currentIndex]);
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const diff = touchStartX.current - touchEndX.current;
+    if (diff > 45) {
+      nextSlide();
+    } else if (diff < -45) {
+      prevSlide();
+    }
+  };
 
   return (
     <section 
       className="hero-slider-section"
       aria-label="Hero Highlights"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
       {HERO_SLIDES.map((slide, idx) => (
         <div 
@@ -67,7 +89,7 @@ export const HeroSlider = () => {
         onClick={prevSlide}
         aria-label="Previous Slide"
       >
-        <ChevronLeft size={24} />
+        <ChevronLeft size={22} />
       </button>
 
       <button 
@@ -75,7 +97,7 @@ export const HeroSlider = () => {
         onClick={nextSlide}
         aria-label="Next Slide"
       >
-        <ChevronRight size={24} />
+        <ChevronRight size={22} />
       </button>
 
       {/* Dots */}
@@ -95,3 +117,4 @@ export const HeroSlider = () => {
     </section>
   );
 };
+

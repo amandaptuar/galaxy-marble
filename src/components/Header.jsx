@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Menu, ShieldCheck } from 'lucide-react';
+import { Menu, MessageCircle } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 
 const NAV_ITEMS = [
@@ -49,6 +49,7 @@ export const Header = () => {
                 className="hamburger-btn mobile-only" 
                 onClick={() => setIsMobileMenuOpen(true)}
                 aria-label="Open Navigation Menu"
+                type="button"
               >
                 <Menu size={22} />
               </button>
@@ -88,16 +89,6 @@ export const Header = () => {
                       </NavLink>
                     </li>
                   ))}
-                  {/* Quick link to Admin */}
-                  <li className="nav-item">
-                    <NavLink 
-                      to="/admin" 
-                      className={({ isActive }) => `nav-link admin-nav-link ${isActive ? 'active' : ''}`}
-                    >
-                      <ShieldCheck size={13} style={{ display: 'inline', marginRight: 4 }} />
-                      <span>Admin</span>
-                    </NavLink>
-                  </li>
                 </ul>
               </nav>
             </div>
@@ -105,12 +96,13 @@ export const Header = () => {
             {/* Right: Direct WhatsApp Enquire */}
             <div className="header-right">
               <a 
-                href="https://wa.me/919929288880?text=Hello%20Galaxy%20Marble%2C%20I%20would%20like%20to%20enquire%20about%20your%20bespoke%20marble%20crafts." 
+                href="https://wa.me/919057206605?text=Hello%20Galaxy%20Marble%2C%20I%20would%20like%20to%20enquire%20about%20your%20bespoke%20marble%20crafts." 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="header-whatsapp-cta"
                 title="Consult with Master Craftsman"
               >
+                <MessageCircle size={15} />
                 <span>Enquire Now</span>
               </a>
             </div>
@@ -120,3 +112,4 @@ export const Header = () => {
     </>
   );
 };
+

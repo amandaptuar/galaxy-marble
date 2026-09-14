@@ -1,11 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, LayoutGrid, Search, MessageCircle } from 'lucide-react';
+import { Home, LayoutGrid, MessageCircle } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 
 export const MobileStickyBar = () => {
   const navigate = useNavigate();
-  const { setIsSearchOpen } = useStore();
 
   const handleHome = () => {
     navigate('/');
@@ -18,10 +17,11 @@ export const MobileStickyBar = () => {
 
   const handleWhatsApp = () => {
     window.open(
-      'https://wa.me/919929288880?text=Hello%20Galaxy%20Marble%2C%20I%20would%20like%20to%20enquire%20about%20your%20bespoke%20marble%20crafts.',
+      'https://wa.me/919057206605?text=Hello%20Galaxy%20Marble%2C%20I%20would%20like%20to%20enquire%20about%20your%20bespoke%20marble%20crafts.',
       '_blank'
     );
   };
+
 
   return (
     <nav className="mobile-sticky-bar" aria-label="Mobile Sticky Navigation">
@@ -44,15 +44,6 @@ export const MobileStickyBar = () => {
       </button>
 
       <button 
-        className="sticky-tab-btn" 
-        onClick={() => setIsSearchOpen(true)}
-        aria-label="Search"
-      >
-        <Search size={20} />
-        <span>Search</span>
-      </button>
-
-      <button 
         className="sticky-tab-btn sticky-whatsapp-btn" 
         onClick={handleWhatsApp}
         aria-label="WhatsApp Enquiry"
@@ -65,3 +56,4 @@ export const MobileStickyBar = () => {
     </nav>
   );
 };
+

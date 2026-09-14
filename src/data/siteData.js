@@ -1151,11 +1151,12 @@ export const DUMMY_PRODUCT = null;
 
 // WhatsApp Enquiry Number and Configuration
 export const WHATSAPP_CONFIG = {
-  PHONE_NUMBER: "919829012345", // Admin WhatsApp number with country code
-  DISPLAY_PHONE: "+91 98290 12345",
+  PHONE_NUMBER: "919057206605", // Admin WhatsApp number with country code
+  DISPLAY_PHONE: "+91 90572 06605",
   EMAIL: "contact@galaxymarble.com",
   ADMIN_EMAIL: "admin@galaxymarble.com"
 };
+
 
 // Curated Architectural Collections - 10 Core Disciplines with Real Folder Photos
 export const COLLECTIONS = [
@@ -1241,79 +1242,107 @@ export const COLLECTIONS = [
   }
 ];
 
-// Authentic Product Gallery (Curated from public/ourproduct)
+// Authentic Product Gallery (Curated from 10 Authentic Architectural Collections)
 export const OUR_PRODUCT_GALLERY = [
   {
-    id: "op-1",
-    title: "Sculpted 3D Wave & Lotus Feature Wall",
-    tag: "3D RELIEF WALL",
-    category: "WALL PANELS & MURALS",
-    stoneType: "Vietnam Crystal White",
-    description: "Monumental organic relief feature wall hand-chiseled with ambient warm backlighting for estate living rooms.",
-    image: "/ourproduct/WhatsApp Image 2026-09-14 at 3.34.52 PM (2).jpeg"
+    id: "op-temple",
+    title: "Royal Makrana Marble Shikhara Mandir",
+    tag: "TEMPLE",
+    category: "TEMPLE",
+    stoneType: "Pure Makrana White",
+    description: "Grand hand-carved Makrana marble temple with intricate shikhara dome, fluted columns, and ornamental deity arch.",
+    image: "/mandir/WhatsApp Image 2026-09-14 at 4.00.16 PM.jpeg",
+    link: "/products?category=TEMPLE"
   },
   {
-    id: "op-2",
-    title: "Royal Pietra Dura Marble Floor Medallion",
-    tag: "PIETRA DURA INLAY",
-    category: "MARBLE SLABS & TILES",
-    stoneType: "Makrana White & Semi-Precious Stone",
-    description: "Intricate floral Mughal carpet floor medallion inlaid with lapis lazuli, malachite, and jasper in pure white marble.",
-    image: "/ourproduct/4738a953-6780-4fab-b827-035a30d40002.jpg"
+    id: "op-fountain",
+    title: "Classical Multi-Tier Courtyard Fountain",
+    tag: "FOUNTAIN",
+    category: "FOUNTAIN",
+    stoneType: "Pure White & Pink Banswara",
+    description: "Multi-tiered classical courtyard fountains with sculpted lion spouts and cascading reflecting pools.",
+    image: "/fountain/WhatsApp Image 2026-09-13 at 6.14.38 PM.jpeg",
+    link: "/products?category=FOUNTAIN"
   },
   {
-    id: "op-3",
-    title: "Gilded Bodhi Leaf Grand Staircase Mural",
-    tag: "STAIRCASE MURAL",
-    category: "WALL PANELS & MURALS",
-    stoneType: "Natural Sandstone & 24K Gold Leaf",
-    description: "Sculpted textured leaf composition with hand-applied 24K gold foil embellishments spanning multi-floor stairwell walls.",
-    image: "/ourproduct/WhatsApp Image 2026-09-14 at 3.34.53 PM.jpeg"
+    id: "op-kibla",
+    title: "Architectural Marble Qibla Mihrab Arch",
+    tag: "KIBLA WORK",
+    category: "KIBLA WORK",
+    stoneType: "Makrana White & Gold Accents",
+    description: "Sacred Islamic Mihrabs, geometric arabesque arches, and Qibla wall stone carvings.",
+    image: "/kibla-work/image.png",
+    link: "/products?category=KIBLA%20WORK"
   },
   {
-    id: "op-4",
-    title: "Sanctuary Forest Wildlife Niche Relief",
-    tag: "SANCTUARY NICHE",
-    category: "TEMPLES & MANDIRS",
-    stoneType: "Hand-Carved Sandstone Arch",
-    description: "Arch-framed nature sanctum bas-relief featuring hand-etched flora and fauna textures in continuous stone cladding.",
-    image: "/ourproduct/WhatsApp Image 2026-09-14 at 3.34.52 PM (1).jpeg"
+    id: "op-basin",
+    title: "Monolithic Countertop Marble Washbasin",
+    tag: "MARBLE BASIN",
+    category: "MARBLE BASIN",
+    stoneType: "Italian Statuario & Makrana",
+    description: "Counter-top hand-carved monolithic marble basins and luxury powder room washbowls.",
+    image: "/marble-basin/countertopmarblebasin.png",
+    link: "/products?category=MARBLE%20BASIN"
   },
   {
-    id: "op-5",
-    title: "Spherical Nero Marquina Stacked Pedestal",
-    tag: "BESPOKE FURNITURE",
-    category: "LUXURY FURNITURE",
-    stoneType: "Black Banswara & Calcite Marble",
-    description: "Sculptural geometric side table composed of hand-turned solid black marble discs accented with spherical white marble spacers.",
-    image: "/ourproduct/7ea15c06-4a4c-431d-b81c-7b60bc2b1980.jpg"
+    id: "op-console",
+    title: "Sculptural Fluted Marble Console Table",
+    tag: "MARBLE CONSOLE TABLE",
+    category: "MARBLE CONSOLE TABLE",
+    stoneType: "Italian Banswara & Makrana",
+    description: "Luxury fluted marble console tables, side tables, and center table pedestals.",
+    image: "/marble-console-table/WhatsApp Image 2026-09-14 at 4.00.38 PM (1).jpeg",
+    link: "/products?category=MARBLE%20CONSOLE%20TABLE"
   },
   {
-    id: "op-6",
-    title: "Hand-Turned Terrazzo Accent Tables",
-    tag: "LUXURY ACCENTS",
-    category: "LUXURY FURNITURE",
-    stoneType: "Italian Terrazzo Stone",
-    description: "Monolithic cast terrazzo coffee tables with fine aggregate chip patterning and hand-buffed satin finish.",
-    image: "/ourproduct/eebfe086-228b-458a-9007-465275114d99.jpg"
+    id: "op-flooring",
+    title: "Royal Pietra Dura Marble Flooring Medallion",
+    tag: "MARBLE FLOORING",
+    category: "MARBLE FLOORING",
+    stoneType: "Makrana White & Semi-Precious Inlay",
+    description: "Premium Italian & Makrana marble floor tiles, medallions, and bookmatched slab flooring.",
+    image: "/marble-flooring/WhatsApp Image 2026-09-14 at 4.00.33 PM (1).jpeg",
+    link: "/products?category=MARBLE%20FLOORING"
   },
   {
-    id: "op-7",
-    title: "Radha Krishna Dual-Tone Stone Relief",
-    tag: "SACRED ART",
-    category: "SACRED MURTIS & IDOLS",
-    stoneType: "Pure Makrana & Black Banswara",
-    description: "Divine Radha Krishna contemporary relief panel carved from monolithic marble blocks with pink lotus blossom inlays.",
-    image: "/ourproduct/WhatsApp Image 2026-09-14 at 3.34.51 PM.jpeg"
+    id: "op-mimbar",
+    title: "Grand Hand-Carved Masjid Mimbar Pulpit",
+    tag: "MASJID MIMBAR",
+    category: "MASJID MIMBAR",
+    stoneType: "Pure Makrana White Marble",
+    description: "Hand-carved marble Masjid Mimbars, sacred pulpits, and Islamic architectural stone art.",
+    image: "/masjid-mimbar/image.png",
+    link: "/products?category=MASJID%20MIMBAR"
   },
   {
-    id: "op-8",
-    title: "Intricate Floral Pooja Mandir Jali Screen",
-    tag: "TEMPLE JALI",
-    category: "TEMPLES & MANDIRS",
-    stoneType: "Makrana White Marble 30mm",
-    description: "Precision open-work pierced marble jali lattice for sanctum doors, temple partitions, and backlit mandir facades.",
-    image: "/ourproduct/WhatsApp Image 2026-09-14 at 3.34.51 PM (1).jpeg"
+    id: "op-pedestal",
+    title: "Freestanding Fluted Pedestal Column Basin",
+    tag: "PEDESTAL BASIN",
+    category: "PEDESTAL BASIN",
+    stoneType: "Natural Monolithic Stone",
+    description: "Monolithic freestanding fluted marble pedestal columns and powder room basins.",
+    image: "/padestial-basin/image.png",
+    link: "/products?category=PEDESTAL%20BASIN"
+  },
+  {
+    id: "op-tulsi",
+    title: "Sacred Royal Makrana Marble Tulsi Kyara",
+    tag: "TULSI POT",
+    category: "TULSI POT",
+    stoneType: "Pure Makrana White",
+    description: "Sacred royal Makrana marble Tulsi Kyaras and carved botanical planters.",
+    image: "/tulsi-pot/WhatsApp Image 2026-09-13 at 6.13.25 PM.jpeg",
+    link: "/products?category=TULSI%20POT"
+  },
+  {
+    id: "op-wallart",
+    title: "Precision 3D CNC Stone Wall Panel & Mural",
+    tag: "CNC STONE WALL ART",
+    category: "CNC STONE WALL ART",
+    stoneType: "Vietnam Crystal & Natural Sandstone",
+    description: "Precision CNC 3D stone wall panels, wave reliefs, geometric murals, and bespoke architectural wall cladding.",
+    image: "/wall-art/image.png",
+    link: "/products?category=CNC%20STONE%20WALL%20ART"
   }
 ];
 

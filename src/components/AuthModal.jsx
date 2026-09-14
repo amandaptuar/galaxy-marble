@@ -161,7 +161,7 @@ export const AuthModal = () => {
                 <input 
                   id="login-phone"
                   type="tel"
-                  placeholder="e.g. 9829012345"
+                  placeholder="e.g. 9057206605"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   autoComplete="tel"
