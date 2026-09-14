@@ -5728,13 +5728,38 @@ ul, ol {
 .catalog-product-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
+  gap: 22px;
+  justify-items: center;
+  padding: 0 16px;
+  width: 100%;
+}
+
+.catalog-product-grid .product-card {
+  width: 100%;
+  max-width: 325px;
+  margin: 0 auto;
+}
+
+@media (max-width: 480px) {
+  .catalog-product-grid {
+    padding: 0 18px;
+    gap: 20px;
+  }
+  .catalog-product-grid .product-card {
+    max-width: 315px;
+  }
 }
 
 @media (min-width: 580px) {
   .catalog-product-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
+    padding: 0;
+    justify-items: stretch;
+  }
+  .catalog-product-grid .product-card {
+    max-width: none;
+    margin: 0;
   }
 }
 
@@ -5744,6 +5769,7 @@ ul, ol {
     gap: 24px;
   }
 }
+
 
 /* Empty & Loading States */
 .catalog-no-results {
