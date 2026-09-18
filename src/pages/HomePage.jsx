@@ -7,7 +7,6 @@ import { PromoStrip } from '../components/PromoStrip';
 import { GalleryLookbook } from '../components/GalleryLookbook';
 import { CollectionsGrid } from '../components/CollectionsGrid';
 import { CommunityReviews } from '../components/CommunityReviews';
-import { GuidesSection } from '../components/GuidesSection';
 import { FaqSection } from '../components/FaqSection';
 import { FeaturedBrands } from '../components/FeaturedBrands';
 import { ConsultationBanner } from '../components/ConsultationBanner';
@@ -74,11 +73,8 @@ export function HomePage() {
       {/* Collections Showcase */}
       <CollectionsGrid />
 
-      {/* The Community: Verified Client Reviews */}
+      {/* What Our Customers Say: Verified Client Reviews Scroller */}
       <CommunityReviews />
-
-      {/* Guides & Insights */}
-      <GuidesSection />
 
       {/* Frequently Asked Questions */}
       <FaqSection />

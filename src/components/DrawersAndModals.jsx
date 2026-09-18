@@ -5,7 +5,7 @@ import {
   ShoppingBag, Heart, Search, ArrowUp, Phone, Sparkles, Star, MessageCircle, ExternalLink
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
-import { AuthModal } from './AuthModal';
+
 
 export const DrawersAndModals = () => {
   const navigate = useNavigate();
@@ -128,8 +128,7 @@ export const DrawersAndModals = () => {
         <ArrowUp size={18} />
       </button>
 
-      {/* User Login / Register Modal */}
-      <AuthModal />
+
 
       {/* 1. ENQUIRY CART DRAWER */}
       {isCartOpen && (
@@ -242,17 +241,7 @@ export const DrawersAndModals = () => {
                     <span>Enquire on WhatsApp</span>
                   </button>
 
-                  {/* Full Cart / Quote Details Page */}
-                  <button 
-                    className="btn-drawer-checkout"
-                    onClick={() => {
-                      setIsCartOpen(false);
-                      navigate('/cart');
-                    }}
-                  >
-                    <span>Review Project Enquiry</span>
-                    <ArrowRight size={16} />
-                  </button>
+
                 </div>
               </div>
             )}
@@ -409,7 +398,9 @@ export const DrawersAndModals = () => {
                   )}
                 </div>
 
-                <h2 className="qv-product-title">{quickViewProduct.title}</h2>
+                <h2 className="qv-product-title">
+                  {(quickViewProduct.category || 'MARBLE').toUpperCase()}
+                </h2>
 
                 {/* Rating & Stone Spec */}
                 <div className="qv-ratings">
@@ -430,11 +421,6 @@ export const DrawersAndModals = () => {
                     Direct quarry pricing based on your project dimensions, edge profile & shipping address.
                   </p>
                 </div>
-
-                {/* Description */}
-                <p className="qv-description">
-                  {quickViewProduct.description || 'Artisanal natural marble crafted with architectural precision.'}
-                </p>
 
                 {/* Specs List */}
                 <div className="qv-spec-grid">
@@ -646,34 +632,12 @@ export const DrawersAndModals = () => {
               </button>
             </div>
 
-            {/* Mobile User Profile Section */}
-            <div className="mobile-user-status-bar">
-              {currentUser ? (
-                <div className="mobile-user-info">
-                  <div className="mobile-avatar">{currentUser.full_name?.charAt(0).toUpperCase()}</div>
-                  <div>
-                    <strong>{currentUser.full_name}</strong>
-                    <span className="mobile-phone">{currentUser.phone}</span>
-                  </div>
-                </div>
-              ) : (
-                <button 
-                  className="mobile-sign-in-cta"
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    setIsAuthModalOpen(true);
-                  }}
-                >
-                  <span>Sign In / Register</span>
-                  <ArrowRight size={14} />
-                </button>
-              )}
-            </div>
+
 
             <div className="mobile-nav-links">
               <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
               <Link to="/products" onClick={() => setIsMobileMenuOpen(false)}>All Products</Link>
-              <Link to="/cart" onClick={() => setIsMobileMenuOpen(false)}>Enquiry Bag ({cart.length})</Link>
+
               <Link to="/about" onClick={() => setIsMobileMenuOpen(false)}>About Our Heritage</Link>
               <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact Artisans</Link>
             </div>

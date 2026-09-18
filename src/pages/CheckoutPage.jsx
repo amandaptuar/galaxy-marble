@@ -66,7 +66,7 @@ export function CheckoutPage() {
         <nav className="catalog-breadcrumbs" aria-label="Breadcrumb">
           <Link to="/">Home</Link>
           <ChevronRight size={14} className="crumb-sep" />
-          <Link to="/cart">Cart</Link>
+          <Link to="/products">Products</Link>
           <ChevronRight size={14} className="crumb-sep" />
           <span>Checkout</span>
         </nav>

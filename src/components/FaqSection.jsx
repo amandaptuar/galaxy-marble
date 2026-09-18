@@ -16,7 +16,7 @@ export const FaqSection = () => {
           <span className="section-tag">Help & Information</span>
           <h2 className="section-title">Frequently Asked Questions</h2>
           <p className="section-subtitle">
-            Everything you need to know about our marble purity, customization, and worldwide crating.
+            Everything you need to know about marble purity, custom mandir sizing, factory pricing, and all-India doorstep delivery.
           </p>
         </div>
 

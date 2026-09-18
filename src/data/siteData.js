@@ -7,10 +7,10 @@ export const HERO_SLIDES = [
     id: 1,
     image: "/herosection/image copy.png",
     mobileImage: "/herosection/image copy.png",
-    badge: "Heritage Makrana & Sacred Art",
-    title: "Timeless Luxury In Handcrafted Stone",
-    subtitle: "Exquisite hand-carved Radha Krishna stone reliefs, bespoke pooja sanctums, and luxury architectural marble.",
-    primaryBtn: "Explore Products",
+    badge: "100% Pure Makrana Marble & Temple Art",
+    title: "Handcrafted Marble Mandirs & Sacred Stone Art",
+    subtitle: "Exquisite hand-carved deity statues, custom home mandirs, and luxury architectural marble crafted by Rajasthani artisans.",
+    primaryBtn: "Explore All Products",
     primaryLink: "/products",
     secondaryBtn: "Enquire on WhatsApp",
     secondaryLink: "#enquiry"
@@ -19,44 +19,44 @@ export const HERO_SLIDES = [
     id: 2,
     image: "/herosection/image.png",
     mobileImage: "/herosection/image.png",
-    badge: "Architectural Wall Murals",
-    title: "Sculpted 3D Fluted Stone Paneling",
-    subtitle: "Transform your estate interiors with monumental fluted marble feature walls chiseled by Rajasthani master artisans.",
+    badge: "3D Architectural Wall Cladding",
+    title: "Sculpted 3D Fluted Marble Wall Panels",
+    subtitle: "Transform your living room & foyer with 3D marble wall panels crafted by master sculptors from Kishangarh & Jaipur.",
     primaryBtn: "View Collections",
     primaryLink: "/products",
-    secondaryBtn: "Book Consultation",
+    secondaryBtn: "Book Free Consultation",
     secondaryLink: "#consultation"
   },
   {
     id: 3,
     image: "/herosection/image copy 2.png",
     mobileImage: "/herosection/image copy 2.png",
-    badge: "Monumental Wall Art & Carvings",
-    title: "Artisanal Stone & Grand Architectural Facades",
-    subtitle: "Bespoke 3D stone murals, sacred temple sanctums, and luxury monolithic installations crafted to perfection.",
+    badge: "Direct Factory Prices",
+    title: "Custom Home Temples & Luxury Stone Art",
+    subtitle: "Custom pooja mandirs, marble washbasins, outdoor fountains, and fluted tables delivered safely across India.",
     primaryBtn: "Explore Catalog",
     primaryLink: "/products",
-    secondaryBtn: "Request Quote",
+    secondaryBtn: "Get Instant Quote",
     secondaryLink: "#enquiry"
   }
 ];
 
 export const TRUST_BADGES = [
   {
-    title: "100% Pure Makrana & Italian Marble",
-    desc: "Direct from historic Makrana and Carrara quarries, guaranteeing generational grandeur."
+    title: "100% Original Makrana & Italian Marble",
+    desc: "Sourced directly from Makrana & Kishangarh marble hubs with lifetime white sheen guarantee."
   },
   {
-    title: "Master Architectural Artisans",
-    desc: "Precision carving and CNC-aided hand chiseling by multi-generational stone sculptors."
+    title: "Rajasthani Master Artisans",
+    desc: "Hand-carved with Vedic Vastu proportions by skilled multi-generational stone sculptors."
   },
   {
-    title: "Worldwide Insured Wooden Crating",
-    desc: "Robust export-grade sea & air crating with 100% door-to-door transit insurance."
+    title: "Safe All-India Doorstep Delivery",
+    desc: "Heavy-duty wooden box packing with transit insurance for 100% safe delivery to your home."
   },
   {
-    title: "Custom Architectural Solutions",
-    desc: "Tailored 3D CAD modeling, custom cut-to-size slabs, and site installation assistance."
+    title: "Direct Factory & Quarry Pricing",
+    desc: "Get transparent factory prices directly from artisans without middleman markups."
   }
 ];
 
@@ -1379,84 +1379,104 @@ export const GUIDES = [
 // Architectural FAQs
 export const FAQS = [
   {
-    question: "How does the Price on Request / Enquiry process work?",
-    answer: "Because natural marble slabs vary in block size, veining clarity, and cut-to-size specifications, all prices are custom-quoted. Simply click 'Enquire on WhatsApp' on any product or submit your Enquiry Bag to receive real-time quarry pricing, freight estimates, and 3D mockups within 2 hours.",
-    q: "How does the Price on Request / Enquiry process work?",
-    a: "Because natural marble slabs vary in block size, veining clarity, and cut-to-size specifications, all prices are custom-quoted. Simply click 'Enquire on WhatsApp' on any product or submit your Enquiry Bag to receive real-time quarry pricing, freight estimates, and 3D mockups within 2 hours."
+    question: "How do I inquire about prices and custom orders?",
+    answer: "Because natural marble items are customized to your exact dimensions and stone preference, prices are quoted directly. Click 'Enquire on WhatsApp' on any product or call +91 90572 06605 to receive photos, videos, and direct factory pricing within minutes.",
+    q: "How do I inquire about prices and custom orders?",
+    a: "Because natural marble items are customized to your exact dimensions and stone preference, prices are quoted directly. Click 'Enquire on WhatsApp' on any product or call +91 90572 06605 to receive photos, videos, and direct factory pricing within minutes."
   },
   {
-    question: "Can you fabricate custom Mandirs and Furniture to our CAD blueprint?",
-    answer: "Yes. Over 70% of our architectural stone projects are bespoke. Our in-house CAD drafting team collaborates directly with your interior designer or architect to produce precise 3D renders before our master sculptors begin hand chiseling.",
-    q: "Can you fabricate custom Mandirs and Furniture to our CAD blueprint?",
-    a: "Yes. Over 70% of our architectural stone projects are bespoke. Our in-house CAD drafting team collaborates directly with your interior designer or architect to produce precise 3D renders before our master sculptors begin hand chiseling."
+    question: "Can you customize Mandirs or Marble products to our home dimensions?",
+    answer: "Yes! Over 80% of our products are made to order according to your exact room size, height, and design requirements. Our team provides 3D design mockups before carving begins.",
+    q: "Can you customize Mandirs or Marble products to our home dimensions?",
+    a: "Yes! Over 80% of our products are made to order according to your exact room size, height, and design requirements. Our team provides 3D design mockups before carving begins."
   },
   {
-    question: "How are marble slabs and temples packed for transit?",
-    answer: "We construct international export-grade, heat-treated & fumigated pine wood crates lined with high-density EPE shock absorption and moisture barrier wrapping. Every shipment is covered by 100% all-risk transit insurance from our factory to your site doorstep.",
-    q: "How are marble slabs and temples packed for transit?",
-    a: "We construct international export-grade, heat-treated & fumigated pine wood crates lined with high-density EPE shock absorption and moisture barrier wrapping. Every shipment is covered by 100% all-risk transit insurance from our factory to your site doorstep."
+    question: "How are heavy marble items delivered safely to my home in India?",
+    answer: "All products are packed inside heavy export-grade fumigated wooden crates with thick shock-absorbing foam padding. We provide 100% insured doorstep transport across all Indian cities including Mumbai, Delhi NCR, Bengaluru, Hyderabad, Chennai, Pune, and Kolkata.",
+    q: "How are heavy marble items delivered safely to my home in India?",
+    a: "All products are packed inside heavy export-grade fumigated wooden crates with thick shock-absorbing foam padding. We provide 100% insured doorstep transport across all Indian cities including Mumbai, Delhi NCR, Bengaluru, Hyderabad, Chennai, Pune, and Kolkata."
   },
   {
-    question: "What is the difference between Makrana Marble and Vietnam White Marble?",
-    answer: "Pure Makrana marble (Rajasthan) is historically renowned for 98%+ calcite purity—the exact stone used in the Taj Mahal—offering generational durability without synthetic resin coatings. Vietnam White marble offers uniform snow-white brilliance with fine micro-crystals, ideal for clean modern luxury aesthetics.",
-    q: "What is the difference between Makrana Marble and Vietnam White Marble?",
-    a: "Pure Makrana marble (Rajasthan) is historically renowned for 98%+ calcite purity—the exact stone used in the Taj Mahal—offering generational durability without synthetic resin coatings. Vietnam White marble offers uniform snow-white brilliance with fine micro-crystals, ideal for clean modern luxury aesthetics."
+    question: "What makes Makrana White Marble better than other marbles?",
+    answer: "Pure Makrana white marble (from Rajasthan) has 98%+ natural calcite purity—the exact marble used to build the Taj Mahal. It never turns yellow or absorbs oils/water, lasting for generations.",
+    q: "What makes Makrana White Marble better than other marbles?",
+    a: "Pure Makrana white marble (from Rajasthan) has 98%+ natural calcite purity—the exact marble used to build the Taj Mahal. It never turns yellow or absorbs oils/water, lasting for generations."
   },
   {
-    question: "Do you provide on-site installation and assembly for large temple shrines?",
-    answer: "Yes. For turnkey Mandirs, large water fountains, and bookmatched wall claddings, our senior Rajasthani artisans travel on-site to oversee dry-fitting, precision alignment, seamless joint grouting, and final diamond buffing.",
-    q: "Do you provide on-site installation and assembly for large temple shrines?",
-    a: "Yes. For turnkey Mandirs, large water fountains, and bookmatched wall claddings, our senior Rajasthani artisans travel on-site to oversee dry-fitting, precision alignment, seamless joint grouting, and final diamond buffing."
+    question: "Do you provide on-site installation support for large Mandirs and fountains?",
+    answer: "Yes. For turnkey home Mandirs, large water fountains, and wall panels, our experienced Rajasthani craftsmen provide complete installation guidance and on-site assembly assistance.",
+    q: "Do you provide on-site installation support for large Mandirs and fountains?",
+    a: "Yes. For turnkey home Mandirs, large water fountains, and wall panels, our experienced Rajasthani craftsmen provide complete installation guidance and on-site assembly assistance."
   },
   {
-    question: "How do I maintain and protect pure white marble from oil, kumkum, and turmeric stains?",
-    answer: "All our sculptures and temple sanctums receive penetrating breathable nano-sealers (Lithofin / Fila) prior to dispatch. For daily maintenance, clean with a damp micro-fiber cloth and pH-neutral stone cleaner. Avoid abrasive powders or harsh acidic detergents.",
-    q: "How do I maintain and protect pure white marble from oil, kumkum, and turmeric stains?",
-    a: "All our sculptures and temple sanctums receive penetrating breathable nano-sealers (Lithofin / Fila) prior to dispatch. For daily maintenance, clean with a damp micro-fiber cloth and pH-neutral stone cleaner. Avoid abrasive powders or harsh acidic detergents."
+    question: "How should I clean and maintain pure white marble at home?",
+    answer: "Clean with a soft damp cloth or mild soapy water. All our sculptures receive protective stone sealers before dispatch. Avoid harsh acidic cleaners or abrasive powders.",
+    q: "How should I clean and maintain pure white marble at home?",
+    a: "Clean with a soft damp cloth or mild soapy water. All our sculptures receive protective stone sealers before dispatch. Avoid harsh acidic cleaners or abrasive powders."
   }
 ];
 
 // Verified Client Reviews & Community
 export const COMMUNITY = [
   {
-    name: "Vikramaditya Singhania",
-    role: "Estate Owner, South Mumbai",
-    location: "South Mumbai Estate",
-    image: "/marble-pooja-room-banner.jpg",
+    name: "Ramesh Sharma & Family",
+    role: "Home Temple Patron",
+    location: "Jaipur, Rajasthan",
+    image: "/mandir/WhatsApp Image 2026-09-14 at 4.00.16 PM.jpeg",
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
-    quote: "The Makrana marble mandir commissioned for our duplex penthouse exceeded every expectation. The jali backlit detail and fluted pillars are true museum-grade craftsmanship.",
+    quote: "Humne apne naye ghar ke liye Makrana white marble mandir order kiya tha. Mandir ki carving aur finishing itni shandar hai ki sabhi relatives ne tareef ki. Packing bohot safe thi aur zero damage ke sath delivery hui.",
     rating: 5,
-    tag: "Bespoke Temple Sanctum"
+    tag: "TEMPLE"
   },
   {
-    name: "Architect Sunita Mehra",
-    role: "Principal, Studio Mehra Associates",
-    location: "Studio Mehra Associates, Delhi",
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
-    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
-    quote: "Galaxy Marble supplied flawless bookmatched Statuario slabs for our Lutyens bungalow project. Precision edge profiling, zero breakage during crating, and punctual site delivery.",
+    name: "Amitabh & Rashmi Verma",
+    role: "Apartment Owners",
+    location: "South Mumbai, Maharashtra",
+    image: "/marble-console-table/WhatsApp Image 2026-09-14 at 4.00.38 PM (1).jpeg",
+    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+    quote: "The fluted marble console table for our living room foyer looks extremely luxurious. Real solid marble stone with premium polish. Direct factory price par mil gaya, thank you Galaxy Marble team!",
     rating: 5,
-    tag: "Italian Statuario Flooring"
+    tag: "MARBLE CONSOLE TABLE"
   },
   {
-    name: "Rajesh & Priya Goel",
-    role: "Villa Patrons, Whitefield",
-    location: "Bengaluru Villa",
-    image: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=800&q=80",
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
-    quote: "We ordered the French classical marble fireplace mantel and custom fluted dining table. The stone veining and silky honed finish create an astonishing luxury atmosphere.",
-    rating: 5,
-    tag: "Luxury Stone Furniture"
-  },
-  {
-    name: "Devendra Rathore",
-    role: "Heritage Hotel Architect, Jaipur",
-    location: "Jaipur Heritage Suites",
-    image: "https://images.unsplash.com/photo-1584467735815-f778f274e296?auto=format&fit=crop&w=800&q=80",
+    name: "Dr. Suresh Kumar Patra",
+    role: "Pooja Courtyard Patron",
+    location: "Bhubaneswar, Odisha",
+    image: "/tulsi-pot/WhatsApp Image 2026-09-13 at 6.13.25 PM.jpeg",
     avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80",
-    quote: "The tiered courtyard water fountain and carved Travertine planters have transformed the central palace courtyard. Generational stone art executed with mathematical perfection.",
+    quote: "Pooja courtyard ke liye Makrana white marble Tulsi pot mangwaya tha. Heavy stone design hai aur barish me bhi bilkul kharab nahi hota. Pure white stone quality 100% authentic.",
     rating: 5,
-    tag: "Fountains & Courtyard Art"
+    tag: "TULSI POT"
+  },
+  {
+    name: "Sanjay Mehta (Interior Architect)",
+    role: "Principal Architect, Studio Space",
+    location: "Ahmedabad, Gujarat",
+    image: "/wall-art/image.png",
+    avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80",
+    quote: "Client ke villa ke foyer wall ke liye 3D CNC marble wall paneling karwaya. Exact CAD dimension ke accoding fitting ho gayi. Finish and 3D depth quality is outstanding.",
+    rating: 5,
+    tag: "CNC STONE WALL ART"
+  },
+  {
+    name: "Priya & Vikram Malhotra",
+    role: "Villa Patrons",
+    location: "Gurugram, Delhi NCR",
+    image: "/marble-basin/countertopmarblebasin.png",
+    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
+    quote: "Master bathroom ke liye hand-carved marble washbasin mangwaya. Pure solid marble block se bana hai, dikhne me aur feel me super high-end hai. Delivered safely within 4 days.",
+    rating: 5,
+    tag: "MARBLE BASIN"
+  },
+  {
+    name: "Kavita & Ranganathan",
+    role: "Garden Lawn Owners",
+    location: "Chennai, Tamil Nadu",
+    image: "/fountain/WhatsApp Image 2026-09-13 at 6.14.38 PM.jpeg",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
+    quote: "Lawn garden ke liye 3-tier white marble fountain banwaya. Water flow aur carving perfection top-notch hai. All-India transport packing heavy wooden crate me full safe tha.",
+    rating: 5,
+    tag: "FOUNTAIN"
   }
 ];
 
@@ -1488,33 +1508,33 @@ export const GALLERY = [
 export const FEATURED_BRANDS = [
   { 
     id: "ad",
-    name: "Architectural Digest", 
-    tagline: "The International Design Authority",
-    quote: "Setting the gold standard in bespoke Makrana marble architecture and sacred stone sanctums."
+    name: "Architectural Digest India", 
+    tagline: "Premier Design Authority",
+    quote: "Setting the benchmark in handcrafted Makrana marble mandirs, home temples, and luxury stone architecture in India."
   },
   { 
     id: "elle-decor",
-    name: "Elle Décor", 
-    tagline: "Luxury Living & Design",
-    quote: "Sculpted natural stone that seamlessly unites ancient Vedic geometry with contemporary penthouse living."
+    name: "Elle Décor India", 
+    tagline: "Luxury Living & Interiors",
+    quote: "Sculpted natural stone that seamlessly unites traditional Vedic Vastu principles with modern luxury homes."
   },
   { 
     id: "vogue-living",
-    name: "Vogue Living", 
+    name: "Vogue Living India", 
     tagline: "Exclusive Architecture",
-    quote: "Generational stone heirlooms chiseled from single blocks of historic Makrana and Carrara stone."
+    quote: "Generational marble art chiseled from single blocks of pure Makrana white stone by skilled Rajasthani master craftsmen."
   },
   { 
     id: "world-of-interiors",
     name: "The World of Interiors", 
-    tagline: "Condé Nast Heritage",
-    quote: "Museum-grade lapidary work and bookmatched Statuario installations crafted with generational mastery."
+    tagline: "Heritage & Craftsmanship",
+    quote: "Museum-quality marble carving and bookmatched Italian marble flooring crafted with multi-generational mastery."
   },
   { 
     id: "robb-report",
-    name: "Robb Report", 
-    tagline: "Luxury Without Compromise",
-    quote: "Uncompromising grandeur and bespoke stone commissions for private estates and luxury villas."
+    name: "Robb Report India", 
+    tagline: "Luxury Architecture",
+    quote: "Uncompromising grandeur and bespoke stone carvings for luxury villas and private residences across India."
   }
 ];
 
@@ -1534,9 +1554,9 @@ export const VIDEO_DATA = {
 
 // Virtual Architectural Consultation
 export const CONSULTATION_DATA = {
-  badge: "Bespoke Design Engineering",
-  title: "Schedule a Virtual Stone Consultation",
-  subtitle: "Speak 1-on-1 with our master architectural stone consultants via video call to discuss floor plans, custom temple elevations, and Italian slab selection.",
+  badge: "Custom Mandir & Stone Design",
+  title: "Schedule Free WhatsApp Consultation",
+  subtitle: "Speak directly with our Rajasthani stone expert on WhatsApp call or chat to discuss room size, Vastu alignment, stone selection, and custom pricing.",
   image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80"
 };
 

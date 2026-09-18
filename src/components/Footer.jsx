@@ -84,7 +84,7 @@ export const Footer = () => {
             <ul className="footer-links">
               <li><Link to="/contact" className="footer-link">Custom Temple Design</Link></li>
               <li><Link to="/products" className="footer-link">Marble Idol Catalogue</Link></li>
-              <li><Link to="/cart" className="footer-link">Shopping Cart & Crating</Link></li>
+              <li><Link to="/products" className="footer-link">Bespoke Marble Collections</Link></li>
               <li><Link to="/about" className="footer-link">Heritage & Marble Care</Link></li>
               <li><a href="https://wa.me/919057206605" target="_blank" rel="noreferrer" className="footer-link">Order Tracking via WhatsApp (+91 90572 06605)</a></li>
             </ul>
