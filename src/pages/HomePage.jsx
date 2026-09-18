@@ -12,6 +12,7 @@ import { FaqSection } from '../components/FaqSection';
 import { FeaturedBrands } from '../components/FeaturedBrands';
 import { ConsultationBanner } from '../components/ConsultationBanner';
 import { OurProductGallery } from '../components/OurProductGallery';
+import { VideoScroller } from '../components/VideoScroller';
 import { useStore } from '../context/StoreContext';
 
 export function HomePage() {
@@ -63,6 +64,9 @@ export function HomePage() {
         btnLink="/products"
         bgImage="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80"
       />
+
+      {/* Video Scroller: Craftsmanship in Motion */}
+      <VideoScroller />
 
       {/* Our Product Gallery Slider (Authentic Creations) */}
       <OurProductGallery />

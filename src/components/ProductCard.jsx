@@ -71,28 +71,12 @@ export const ProductCard = ({ product }) => {
 
       {/* Product Content Details */}
       <div className="product-info">
-        {/* Category Header strictly in ALL CAPS */}
+        {/* Product Category Heading strictly */}
         <div className="product-meta-row">
-          <span className="product-category-tag">
+          <h3 className="product-card-heading" title={categoryName}>
             {categoryName}
-          </span>
+          </h3>
           {product.sku && <span className="product-sku">{product.sku}</span>}
-        </div>
-        
-        {/* Product Title */}
-        <h3 
-          className="product-title" 
-          title={product.title}
-        >
-          {product.title}
-        </h3>
-
-        {/* Stone details & dimensions */}
-        <div className="product-spec-mini">
-          <span>{stoneName}</span>
-          {product.dimensions && (
-            <span className="spec-dim">• {product.dimensions}</span>
-          )}
         </div>
 
         {/* Price Box - Strictly NO PRICES, Price on Request / Enquiry */}

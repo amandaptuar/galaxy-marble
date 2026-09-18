@@ -145,21 +145,13 @@ export const OurProductGallery = () => {
 
                     {/* Card Content Details */}
                     <div className="gallery-product-info">
-                      <div className="gallery-product-category">
-                        {item.category}
-                      </div>
-
                       <h3 
-                        className="gallery-product-title"
+                        className="gallery-product-heading"
                         onClick={() => handleProductClick(item)}
-                        title={item.title}
+                        title={item.category}
                       >
-                        {item.title}
+                        {item.category}
                       </h3>
-
-                      <div className="gallery-product-stone">
-                        <span>{item.stoneType}</span>
-                      </div>
 
                       <div className="gallery-product-price-row">
                         <span className="gallery-price-tag">Price on Request</span>
