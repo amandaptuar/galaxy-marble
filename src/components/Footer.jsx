@@ -65,7 +65,7 @@ export const Footer = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, fontSize: '0.82rem', color: '#b5bac1' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <MapPin size={16} className="text-gold" />
-                <span>NH-8 Marble Industrial Belt, Kishangarh, Rajasthan 305801, India</span>
+                <span>Gali no. 2, Palara Road, Makrana, District Didwana-Kuchaman, Rajasthan, India</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <Phone size={16} className="text-gold" />
@@ -83,7 +83,6 @@ export const Footer = () => {
             <h4 className="footer-col-title">Customer Service</h4>
             <ul className="footer-links">
               <li><Link to="/contact" className="footer-link">Custom Temple Design</Link></li>
-              <li><Link to="/products" className="footer-link">Marble Idol Catalogue</Link></li>
               <li><Link to="/products" className="footer-link">Bespoke Marble Collections</Link></li>
               <li><Link to="/about" className="footer-link">Heritage & Marble Care</Link></li>
               <li><a href="https://wa.me/919057206605" target="_blank" rel="noreferrer" className="footer-link">Order Tracking via WhatsApp (+91 90572 06605)</a></li>
@@ -96,7 +95,7 @@ export const Footer = () => {
             <ul className="footer-links">
               <li><Link to="/products" className="footer-link">All Marble Artworks</Link></li>
               <li><Link to="/about" className="footer-link">About Our Artisans</Link></li>
-              <li><Link to="/contact" className="footer-link">Jaipur Studio Atelier</Link></li>
+              <li><Link to="/contact" className="footer-link">Makrana Studio Atelier</Link></li>
               <li><Link to="/terms" className="footer-link">Terms & Conditions</Link></li>
               <li><Link to="/privacy" className="footer-link">Privacy & Export Policy</Link></li>
             </ul>

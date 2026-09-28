@@ -21,7 +21,7 @@ export const HERO_SLIDES = [
     mobileImage: "/herosection/image.png",
     badge: "3D Architectural Wall Cladding",
     title: "Sculpted 3D Fluted Marble Wall Panels",
-    subtitle: "Transform your living room & foyer with 3D marble wall panels crafted by master sculptors from Kishangarh & Jaipur.",
+    subtitle: "Transform your living room & foyer with 3D marble wall panels crafted by master sculptors from Makrana, Rajasthan.",
     primaryBtn: "View Collections",
     primaryLink: "/products",
     secondaryBtn: "Book Free Consultation",
@@ -44,7 +44,7 @@ export const HERO_SLIDES = [
 export const TRUST_BADGES = [
   {
     title: "100% Original Makrana & Italian Marble",
-    desc: "Sourced directly from Makrana & Kishangarh marble hubs with lifetime white sheen guarantee."
+    desc: "Sourced directly from Makrana marble quarries with lifetime white sheen guarantee."
   },
   {
     title: "Rajasthani Master Artisans",
@@ -1421,7 +1421,7 @@ export const COMMUNITY = [
   {
     name: "Ramesh Sharma & Family",
     role: "Home Temple Patron",
-    location: "Jaipur, Rajasthan",
+    location: "Makrana, Rajasthan",
     image: "/mandir/WhatsApp Image 2026-09-14 at 4.00.16 PM.jpeg",
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
     quote: "Humne apne naye ghar ke liye Makrana white marble mandir order kiya tha. Mandir ki carving aur finishing itni shandar hai ki sabhi relatives ne tareef ki. Packing bohot safe thi aur zero damage ke sath delivery hui.",

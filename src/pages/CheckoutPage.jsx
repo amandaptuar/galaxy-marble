@@ -235,7 +235,7 @@ export function CheckoutPage() {
                       type="text" 
                       name="city" 
                       required 
-                      placeholder="Jaipur / Mumbai"
+                      placeholder="Delhi / Mumbai"
                       value={formData.city}
                       onChange={handleChange}
                     />

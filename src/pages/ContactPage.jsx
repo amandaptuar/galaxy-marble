@@ -62,7 +62,7 @@ export function ContactPage() {
               </div>
               <div className="info-details">
                 <h3>Makrana Atelier & Studio</h3>
-                <p>Makrana, Rajasthan 341505, India</p>
+                <p>Gali no. 2, Palara Road, Makrana, District Didwana-Kuchaman, Rajasthan, India</p>
                 <span className="info-sub">Quarry & Hand-Sculpting Atelier</span>
               </div>
             </div>
@@ -210,7 +210,7 @@ export function ContactPage() {
           {/* Right: Atelier & WhatsApp Card */}
           <div className="contact-sidebar-card spacy">
             <div className="atelier-highlight-box spacy">
-              <span className="gold-tag">Jaipur & Makrana</span>
+              <span className="gold-tag">Makrana</span>
               <h3>Visit Our Studio</h3>
               <p>
                 Schedule an in-person walkthrough to inspect raw Makrana blocks, view live chiseling, and review 3D temple elevations.

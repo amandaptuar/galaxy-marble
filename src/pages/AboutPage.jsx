@@ -95,7 +95,7 @@ export function AboutPage() {
 
             <div className="philosophy-image-box">
               <img 
-                src="https://www.shoptilakstonearts.com/cdn/shop/files/SMT01948-Edit-min.jpg" 
+                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80" 
                 alt="Master Marble Artisans in Rajasthan" 
                 className="philosophy-img"
               />

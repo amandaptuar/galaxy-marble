@@ -18,7 +18,7 @@ export function TermsPage() {
             <span>Legal Framework</span>
           </div>
           <h1>Terms of Artisanal Commission & Service</h1>
-          <p className="policy-date">Effective Date: September 2026 • Galaxy Marble (Jaipur & Makrana, Rajasthan)</p>
+          <p className="policy-date">Effective Date: September 2026 • Galaxy Marble (Makrana, Rajasthan)</p>
         </div>
 
         <div className="policy-content-card">
@@ -95,7 +95,7 @@ export function TermsPage() {
           <section className="policy-section">
             <h2>8. Governing Law & Atelier Concierge Contact</h2>
             <p>
-              These terms are governed by the laws of India, with exclusive jurisdiction in the courts of Jaipur, Rajasthan.
+              These terms are governed by the laws of India, with exclusive jurisdiction in the courts of Didwana-Kuchaman, Rajasthan.
             </p>
             <div className="contact-callout-box">
               <ShieldCheck size={20} className="text-gold" />
