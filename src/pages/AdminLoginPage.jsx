@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { ShieldCheck, Lock, Mail, ArrowRight, AlertCircle, ArrowLeft } from 'lucide-react';
+import { ShieldCheck, Lock, User, ArrowRight, AlertCircle, ArrowLeft } from 'lucide-react';
 import { WHATSAPP_CONFIG } from '../data/siteData';
 
 export function AdminLoginPage() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -14,17 +14,24 @@ export function AdminLoginPage() {
     e.preventDefault();
     setError('');
 
+    const cleanUser = username.trim().toLowerCase();
+    const cleanPass = password.trim();
     const adminEmail = (WHATSAPP_CONFIG.ADMIN_EMAIL || 'admin@galaxymarble.com').toLowerCase();
-    
-    if (email.trim().toLowerCase() === adminEmail && (password === 'admin123' || password === 'admin@123')) {
+
+    // Allows username: "admin" or email: "admin@galaxymarble.com"
+    // Allows password: "12345" or "admin123"
+    const isValidUser = cleanUser === 'admin' || cleanUser === adminEmail;
+    const isValidPass = cleanPass === '12345' || cleanPass === 'admin123' || cleanPass === 'admin@123';
+
+    if (isValidUser && isValidPass) {
       setLoading(true);
       setTimeout(() => {
         localStorage.setItem('gm_admin_auth', 'true');
-        localStorage.setItem('gm_admin_email', email.trim());
+        localStorage.setItem('gm_admin_email', cleanUser);
         navigate('/admin');
-      }, 500);
+      }, 400);
     } else {
-      setError('Invalid Admin email or password. Please try again.');
+      setError('Invalid Admin username or password. (Username: admin | Password: 12345)');
     }
   };
 
@@ -45,7 +52,7 @@ export function AdminLoginPage() {
             <span className="admin-sub-tag-white">ADMIN PORTAL</span>
             <h1 className="admin-title-white">Admin Sign In</h1>
             <p className="admin-desc-white">
-              Sign in with administrative email & password to manage products and customer queries.
+              Sign in with your admin credentials to manage products and categories.
             </p>
           </div>
 
@@ -58,17 +65,18 @@ export function AdminLoginPage() {
 
           <form onSubmit={handleLogin} className="admin-login-form-white">
             <div className="admin-field-white">
-              <label htmlFor="admin-email">Admin Email</label>
+              <label htmlFor="admin-username">Admin Username</label>
               <div className="admin-input-wrap-white">
-                <Mail size={16} className="admin-icon-white" />
+                <User size={16} className="admin-icon-white" />
                 <input 
-                  id="admin-email"
-                  type="email"
+                  id="admin-username"
+                  type="text" 
                   required
-                  placeholder="Enter admin email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  autoComplete="email"
+                  placeholder="Enter username (e.g. admin)"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  autoComplete="username"
+                  autoCapitalize="none"
                 />
               </div>
             </div>
@@ -81,7 +89,7 @@ export function AdminLoginPage() {
                   id="admin-pass"
                   type="password"
                   required
-                  placeholder="Enter password"
+                  placeholder="Enter password (e.g. 12345)"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   autoComplete="current-password"

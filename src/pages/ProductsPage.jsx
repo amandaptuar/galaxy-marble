@@ -10,7 +10,7 @@ import { ARCHITECTURAL_CATEGORIES, normalizeCategory } from '../data/siteData';
 
 export function ProductsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { products, isLoadingProducts } = useStore();
+  const { products, categories, isLoadingProducts } = useStore();
 
   const isShowAllParam = searchParams.get('all') === 'true';
 
@@ -38,23 +38,27 @@ export function ProductsPage() {
     }
   }, [searchParams]);
 
+  const activeCategoriesSource = (categories && categories.length > 0) ? categories : ARCHITECTURAL_CATEGORIES;
+
   // Extract architectural categories with live product counts
   const categoryList = useMemo(() => {
     const map = new Map();
-    ARCHITECTURAL_CATEGORIES.forEach(c => map.set(c.title.toUpperCase(), 0));
+    activeCategoriesSource.forEach(c => map.set(c.title.toUpperCase(), 0));
 
     products.forEach(p => {
       const cat = normalizeCategory(p.category);
       if (map.has(cat)) {
-        map.set(cat, map.get(cat) + 1);
+        map.set(cat, (map.get(cat) || 0) + 1);
+      } else {
+        map.set(cat, 1);
       }
     });
 
-    return ARCHITECTURAL_CATEGORIES.map(cat => ({
+    return activeCategoriesSource.map(cat => ({
       ...cat,
       liveCount: map.get(cat.title.toUpperCase()) || 0
     }));
-  }, [products]);
+  }, [products, activeCategoriesSource]);
 
   // Handle clicking a specific category circle
   const handleSelectCategory = (catTitle) => {
@@ -139,12 +143,16 @@ export function ProductsPage() {
   // Active category metadata if a single category is selected
   const currentCategoryData = useMemo(() => {
     if (selectedCategories.length === 1) {
-      return ARCHITECTURAL_CATEGORIES.find(
+      return activeCategoriesSource.find(
         c => normalizeCategory(c.title) === selectedCategories[0]
-      );
+      ) || {
+        title: selectedCategories[0],
+        description: `Bespoke handcrafted ${selectedCategories[0].toLowerCase()} collection.`,
+        image: '/marble-hero-bg.jpg'
+      };
     }
     return null;
-  }, [selectedCategories]);
+  }, [selectedCategories, activeCategoriesSource]);
 
   // Determine whether to show the initial CIRCLE CATEGORIES view
   // Shows when no category is selected and user hasn't explicitly clicked "View All"

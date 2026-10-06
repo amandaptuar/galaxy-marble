@@ -1,30 +1,50 @@
 import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
-import { SEED_PRODUCTS, WHATSAPP_CONFIG, normalizeCategory } from '../data/siteData';
+import { SEED_PRODUCTS, ARCHITECTURAL_CATEGORIES, WHATSAPP_CONFIG, normalizeCategory } from '../data/siteData';
 import { 
   fetchLiveProducts, 
   addProduct as apiAddProduct,
   updateProduct as apiUpdateProduct,
   deleteProduct as apiDeleteProduct,
+  fetchLiveCategories,
+  addCategory as apiAddCategory,
+  updateCategory as apiUpdateCategory,
+  deleteCategory as apiDeleteCategory,
   registerUser,
   loginUser,
   getCurrentSessionUser,
   logoutCurrentUser,
-  createEnquiry
+  createEnquiry,
+  isSupabaseConnected
 } from '../lib/supabase';
 
 const StoreContext = createContext();
 
 export const StoreProvider = ({ children }) => {
-  // 1. PRODUCTS STATE (Dynamic from Supabase / Local storage)
+  // 1. PRODUCTS & CATEGORIES STATE
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
 
+  // Load Categories (Supabase / Local / Default Seeds)
+  const loadCategories = useCallback(async () => {
+    setIsLoadingCategories(true);
+    try {
+      const liveCats = await fetchLiveCategories(ARCHITECTURAL_CATEGORIES);
+      setCategories(liveCats || []);
+    } catch (e) {
+      console.error('Failed to load categories:', e);
+      setCategories(ARCHITECTURAL_CATEGORIES);
+    } finally {
+      setIsLoadingCategories(false);
+    }
+  }, []);
+
+  // Load Products (Supabase / Local / Default Seeds)
   const loadProducts = useCallback(async () => {
     setIsLoadingProducts(true);
     try {
       const liveList = await fetchLiveProducts([]);
-      // Merge seed products with live (admin-added) products
-      // Live products take priority; seed products fill out the catalog
       const liveIds = new Set((liveList || []).map(p => p.id));
       const seedOnly = SEED_PRODUCTS.filter(sp => !liveIds.has(sp.id));
       const merged = [...(liveList || []), ...seedOnly].map(p => ({
@@ -34,7 +54,6 @@ export const StoreProvider = ({ children }) => {
       setProducts(merged);
     } catch (e) {
       console.error('Failed to load products:', e);
-      // Fallback to seed products if Supabase fails
       setProducts(SEED_PRODUCTS.map(p => ({
         ...p,
         category: normalizeCategory(p.category)
@@ -44,16 +63,62 @@ export const StoreProvider = ({ children }) => {
     }
   }, []);
 
+  // Initial Load
   useEffect(() => {
+    loadCategories();
     loadProducts();
-  }, [loadProducts]);
+  }, [loadCategories, loadProducts]);
 
-  // Admin live modifiers
+  // Dynamic Category Operations
+  const addCategoryToStore = async (catData) => {
+    const newCat = await apiAddCategory(catData);
+    setCategories(prev => {
+      const filtered = prev.filter(c => c.id !== newCat.id && c.title !== newCat.title);
+      return [...filtered, newCat];
+    });
+    showToast(`Category "${newCat.title}" created successfully!`);
+    return newCat;
+  };
+
+  const updateCategoryInStore = async (id, catData) => {
+    const updated = await apiUpdateCategory(id, catData);
+    setCategories(prev => prev.map(c => c.id === id ? { ...c, ...updated } : c));
+    showToast(`Category updated successfully!`);
+    return updated;
+  };
+
+  const deleteCategoryFromStore = async (id, title) => {
+    await apiDeleteCategory(id);
+    setCategories(prev => prev.filter(c => c.id !== id));
+    showToast(`Category "${title || id}" removed.`);
+    return true;
+  };
+
+  // Product Modifiers
   const addProductToStore = async (productData) => {
     const saved = await apiAddProduct(productData);
-    setProducts(prev => [saved, ...prev.filter(p => p.id !== saved.id)]);
+    const normalizedSaved = {
+      ...saved,
+      category: normalizeCategory(saved.category)
+    };
+    setProducts(prev => [normalizedSaved, ...prev.filter(p => p.id !== saved.id)]);
+    
+    // If the category didn't exist in active categories, auto-add it
+    const catTitle = (saved.category || '').toUpperCase();
+    if (catTitle && !categories.some(c => c.title.toUpperCase() === catTitle)) {
+      try {
+        await addCategoryToStore({
+          title: catTitle,
+          description: `Bespoke handcrafted ${catTitle.toLowerCase()} collection.`,
+          image: saved.image
+        });
+      } catch (e) {
+        console.warn('Auto category creation error:', e);
+      }
+    }
+
     showToast(`Product "${saved.title.slice(0, 24)}..." published successfully!`);
-    return saved;
+    return normalizedSaved;
   };
 
   const updateProductInStore = async (id, productData) => {
@@ -161,7 +226,7 @@ export const StoreProvider = ({ children }) => {
           id: product.id || 'gm-' + Date.now(),
           title: product.title,
           sku: product.sku || 'GM-ARTISAN',
-          category: (product.category || 'MARBLE SLABS & TILES').toUpperCase(),
+          category: (product.category || 'MARBLE BASIN').toUpperCase(),
           stoneType: product.stone_type || product.stoneType || 'Natural Stone',
           dimensions: product.dimensions || 'Custom Sizing',
           image: product.image || '/marble-hero-bg.jpg',
@@ -218,18 +283,11 @@ export const StoreProvider = ({ children }) => {
   }, [cart]);
 
   // 4. WHATSAPP & DATABASE ENQUIRY WORKFLOW
-  /**
-   * Submit single product WhatsApp enquiry and log to Supabase/Admin
-   */
   const enquireOnWhatsApp = async (product, customMessage = '') => {
-    // 1. Add to user's cart history
     addToCart(product, 1);
-
-    // 2. Prepare user contact info
     const customerName = currentUser ? currentUser.full_name : 'Customer';
     const customerPhone = currentUser ? currentUser.phone : 'Not provided';
 
-    // 3. Save Enquiry in Supabase with exact Date & Time
     try {
       await createEnquiry({
         userName: customerName,
@@ -245,7 +303,6 @@ export const StoreProvider = ({ children }) => {
       console.warn('Enquiry creation error:', e);
     }
 
-    // 4. Format WhatsApp Message with production domain image URL
     const siteDomain = WHATSAPP_CONFIG.SITE_URL || 'https://galaxy-marble.netlify.app';
     let productImageUrl = '';
     if (product.image) {
@@ -276,9 +333,6 @@ export const StoreProvider = ({ children }) => {
     showToast(`Enquiry sent! Redirecting to WhatsApp...`);
   };
 
-  /**
-   * Submit multi-item bulk Enquiry from Cart
-   */
   const submitCartEnquiry = async ({ name, phone, notes }) => {
     if (cart.length === 0) {
       showToast('Your enquiry bag is empty.');
@@ -289,7 +343,6 @@ export const StoreProvider = ({ children }) => {
     const customerPhone = phone || (currentUser ? currentUser.phone : 'Not provided');
     const siteDomain = WHATSAPP_CONFIG.SITE_URL || 'https://galaxy-marble.netlify.app';
 
-    // 1. Save each product or aggregated enquiry in Supabase
     try {
       for (const item of cart) {
         await createEnquiry({
@@ -307,7 +360,6 @@ export const StoreProvider = ({ children }) => {
       console.warn('Error recording bulk cart enquiry:', e);
     }
 
-    // 2. Format WhatsApp Message with itemized list and full domain image links
     const itemsList = cart
       .map((item, idx) => {
         let itemImg = '';
@@ -337,7 +389,6 @@ export const StoreProvider = ({ children }) => {
     showToast('Official quote enquiry submitted to admin & WhatsApp opened!');
   };
 
-
   return (
     <StoreContext.Provider
       value={{
@@ -349,6 +400,14 @@ export const StoreProvider = ({ children }) => {
         updateProductInStore,
         deleteProductFromStore,
         allProducts: products,
+
+        // Categories
+        categories,
+        isLoadingCategories,
+        loadCategories,
+        addCategoryToStore,
+        updateCategoryInStore,
+        deleteCategoryFromStore,
 
         // Auth
         currentUser,

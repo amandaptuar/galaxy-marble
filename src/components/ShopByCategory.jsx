@@ -1,9 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles } from 'lucide-react';
+import { useStore } from '../context/StoreContext';
 import { ARCHITECTURAL_CATEGORIES } from '../data/siteData';
 
 export const ShopByCategory = () => {
+  const { categories, products } = useStore();
+
+  const displayCategories = (categories && categories.length > 0) ? categories : ARCHITECTURAL_CATEGORIES;
+
+  // Calculate product counts per category dynamically
+  const getProductCount = (catTitle) => {
+    if (!products || products.length === 0) return '10+';
+    const count = products.filter(p => (p.category || '').toUpperCase() === catTitle.toUpperCase()).length;
+    return count > 0 ? `${count} Designs` : 'Bespoke';
+  };
+
   return (
     <section className="category-section" id="categories">
       <div className="container">
@@ -17,26 +29,31 @@ export const ShopByCategory = () => {
 
         <div className="category-scroll-wrap">
           <div className="category-scroll-container">
-            {ARCHITECTURAL_CATEGORIES.map((cat, idx) => (
-              <Link 
-                key={idx} 
-                to={cat.link} 
-                className="category-card"
-              >
-                <div className="category-img-box">
-                  <img 
-                    src={cat.image} 
-                    alt={cat.title} 
-                    className="category-img"
-                    loading="lazy"
-                  />
-                  <div className="category-overlay-count">
-                    <span>{cat.count || 12}+ Designs</span>
+            {displayCategories.map((cat, idx) => {
+              const catLink = cat.link || `/products?category=${encodeURIComponent(cat.title)}`;
+              const catImg = cat.image || '/marble-hero-bg.jpg';
+              return (
+                <Link 
+                  key={cat.id || idx} 
+                  to={catLink} 
+                  className="category-card"
+                >
+                  <div className="category-img-box">
+                    <img 
+                      src={catImg} 
+                      alt={cat.title} 
+                      className="category-img"
+                      loading="lazy"
+                      onError={(e) => { e.target.src = '/marble-hero-bg.jpg'; }}
+                    />
+                    <div className="category-overlay-count">
+                      <span>{getProductCount(cat.title)}</span>
+                    </div>
                   </div>
-                </div>
-                <h3 className="category-name">{cat.title}</h3>
-              </Link>
-            ))}
+                  <h3 className="category-name">{cat.title}</h3>
+                </Link>
+              );
+            })}
 
             {/* Explore More Products Card at End of Scroller */}
             <Link 
