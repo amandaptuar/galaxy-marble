@@ -1,0 +1,26 @@
+# ==============================================================================
+# GALAXY MARBLE - ROBOTS CONFIGURATION
+# https://galaxy-marble.netlify.app/
+# ==============================================================================
+
+User-agent: *
+Allow: /
+Allow: /products
+Allow: /about
+Allow: /contact
+Allow: /terms
+Allow: /privacy
+Allow: /collections/
+Allow: /mandir/
+Allow: /marble-basin/
+Allow: /masjid-mimbar/
+Allow: /fountain/
+Allow: /wall-art/
+
+# Disallow internal admin and private checkout session endpoints
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /checkout
+
+# Sitemaps
+Sitemap: https://galaxy-marble.netlify.app/sitemap.xml

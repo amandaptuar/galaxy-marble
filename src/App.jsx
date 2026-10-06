@@ -17,12 +17,17 @@ import { PrivacyPage } from './pages/PrivacyPage';
 import { AdminLoginPage } from './pages/AdminLoginPage';
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
 
+import { SEOHead } from './components/SEOHead';
+
 function AppLayout() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
     <div className="app-root">
+      {/* Dynamic SEO Meta Tags & Structured Data per Route */}
+      <SEOHead />
+
       {/* Persistent Customer Header (hidden on admin dashboard) */}
       {!isAdminRoute && <Header />}
 
